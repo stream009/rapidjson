@@ -6,5 +6,6 @@ add_library(json STATIC
     base.cpp
     value.cpp
     array.cpp
+    object.cpp
     json.cpp
 )

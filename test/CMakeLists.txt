@@ -6,11 +6,13 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 
-add_executable(test_main
+add_executable(main
     main.cpp
     value.cpp
+    array.cpp
+    object.cpp
 )
-target_link_libraries(test_main
+target_link_libraries(main
     ${Boost_LIBRARIES}
     json
 )

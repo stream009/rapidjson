@@ -14,7 +14,7 @@ public:
     using rapidjson::Value::Value;
 
     value_type(value_type const& v)
-        : rapidjson::Value { v, allocator() }
+        : rapidjson::Value { v, allocator(), true }
     {}
 
 };

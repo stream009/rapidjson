@@ -3,6 +3,7 @@
 #include <json/json.hpp>
 #include <json/value.hpp>
 #include <json/array.hpp>
+#include <json/object.hpp>
 
 namespace json::testing {
 
@@ -317,6 +318,26 @@ BOOST_AUTO_TEST_SUITE(constructor)
         BOOST_TEST(v2 == s);
     }
 
+    BOOST_AUTO_TEST_CASE(array)
+    {
+        json::array a;
+        a.push_back(true);
+
+        json::value v { a };
+
+        BOOST_TEST(v == a);
+    }
+
+    BOOST_AUTO_TEST_CASE(object)
+    {
+        json::object o;
+        o["foo"] = "bar";
+
+        json::value v { o };
+
+        BOOST_TEST(v == o);
+    }
+
     BOOST_AUTO_TEST_CASE(null_)
     {
         json::value v { null };
@@ -592,6 +613,28 @@ BOOST_AUTO_TEST_SUITE(assignment)
         BOOST_TEST(sv.size() == s.size());
     }
 
+    BOOST_AUTO_TEST_CASE(array)
+    {
+        json::array a;
+        a.push_back(true);
+
+        json::value v;
+        v = a;
+
+        BOOST_TEST(v == a);
+    }
+
+    BOOST_AUTO_TEST_CASE(object)
+    {
+        json::object o;
+        o["foo"] = "bar";
+
+        json::value v;
+        v = o;
+
+        BOOST_TEST(v == o);
+    }
+
     BOOST_AUTO_TEST_CASE(null_)
     {
         json::value v;
@@ -662,6 +705,22 @@ BOOST_AUTO_TEST_SUITE(query)
         BOOST_TEST(v.is_string());
     }
 
+    BOOST_AUTO_TEST_CASE(is_array)
+    {
+        json::array a;
+        json::value v { a };
+
+        BOOST_TEST(v.is_array());
+    }
+
+    BOOST_AUTO_TEST_CASE(is_object)
+    {
+        json::object o;
+        json::value v { o };
+
+        BOOST_TEST(v.is_object());
+    }
+
     BOOST_AUTO_TEST_CASE(get_bool) //TODO error handling
     {
         json::value v { true };
@@ -689,16 +748,59 @@ BOOST_AUTO_TEST_SUITE(query)
         BOOST_TEST(s == "string");
     }
 
-#if 0
     BOOST_AUTO_TEST_CASE(get_array)
     {
-        json::value v;
+        json::array a1;
+        a1.push_back(1);
 
-        auto& a = v.get_array();
+        json::value v { a1 };
 
-        BOOST_TEST(a.empty());
+        auto& a2 = v.get_array();
+
+        BOOST_REQUIRE(a2.size() == 1);
+        BOOST_TEST(a2[0] == 1);
     }
-#endif
+
+    BOOST_AUTO_TEST_CASE(get_array_const)
+    {
+        json::array a1;
+        a1.push_back(1);
+
+        json::value v { a1 };
+        auto const& vc = v;
+
+        auto& a2 = vc.get_array();
+
+        BOOST_REQUIRE(a2.size() == 1);
+        BOOST_TEST(a2[0] == 1);
+    }
+
+    BOOST_AUTO_TEST_CASE(get_object)
+    {
+        json::object o1;
+        o1["foo"] = true;
+
+        json::value v { o1 };
+
+        auto& o2 = v.get_object();
+
+        BOOST_REQUIRE(o2.size() == 1);
+        BOOST_TEST(o2["foo"] == true);
+    }
+
+    BOOST_AUTO_TEST_CASE(get_object_const)
+    {
+        json::object o1;
+        o1["foo"] = true;
+
+        json::value v { o1 };
+
+        auto const& vc = v;
+        auto& o2 = vc.get_object();
+
+        BOOST_REQUIRE(o2.size() == 1);
+        BOOST_TEST(o2["foo"] == true);
+    }
 
 BOOST_AUTO_TEST_SUITE_END() // query
 
@@ -731,6 +833,38 @@ BOOST_AUTO_TEST_SUITE(modifier)
         auto sv = v.get_string();
         BOOST_TEST((void*)sv.data() != s);
         BOOST_TEST(sv.size() == strlen(s));
+    }
+
+    BOOST_AUTO_TEST_CASE(set_array)
+    {
+        json::array a1;
+        a1.push_back(1);
+
+        json::value v;
+        v.set_array(a1);
+
+        BOOST_TEST(v.is_array());
+
+        auto const& a2 = v.get_array();
+
+        BOOST_TEST(a2.size() == 1);
+        BOOST_TEST(a2.front() == 1);
+    }
+
+    BOOST_AUTO_TEST_CASE(set_object)
+    {
+        json::object o1;
+        o1["foo"] = 10;
+
+        json::value v;
+        v.set_object(o1);
+
+        BOOST_TEST(v.is_object());
+
+        auto const& o2 = v.get_object();
+
+        BOOST_TEST(o2.size() == 1);
+        BOOST_TEST(o2["foo"] == 10);
     }
 
     BOOST_AUTO_TEST_CASE(set_null)

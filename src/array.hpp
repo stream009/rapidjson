@@ -3,6 +3,8 @@
 
 #include "base.hpp"
 
+#include <iosfwd>
+
 namespace json {
 
 class value;
@@ -11,12 +13,19 @@ class array : public base
 {
 public:
     using size_type = std::size_t;
-    using iterator = char*;
-    using const_iterator = char const*;
+    using iterator = value*;
+    using const_iterator = value const*;
 
 public:
     array();
-    ~array();
+
+    array(array const&) = default;
+    array(array&&) = default;
+
+    array& operator=(array const&) = default;
+    array& operator=(array&&) = default;
+
+    ~array() = default;
 
     // query
     size_type size() const;
@@ -51,6 +60,8 @@ public:
     void erase(const_iterator);
     void erase(const_iterator first, const_iterator last);
 };
+
+std::ostream& operator<<(std::ostream&, array const&);
 
 } // namespace json
 

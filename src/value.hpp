@@ -1,11 +1,12 @@
 #ifndef JSON_VALUE_HPP
 #define JSON_VALUE_HPP
 
-#include <iosfwd>
-#include <memory>
-
 #include "base.hpp"
 #include "json.hpp"
+
+#include <iosfwd>
+#include <string>
+#include <string_view>
 
 namespace json {
 
@@ -37,19 +38,17 @@ public:
 public:
     value() = default;
 
-    template<typename T,
-             typename = std::enable_if_t<std::is_same_v<T, bool>> >
-    value(T);
-
-    //value(bool);
     value(number_t);
     value(char const*);
     value(std::string const&);
     value(std::string_view);
-    //TODO array, object
+    value(array const&);
+    value(object const&);
     value(null_t);
 
-    value(std::unique_ptr<value_type>);
+    template<typename T,
+             typename = std::enable_if_t<std::is_same_v<T, bool>> >
+    value(T);
 
     value(value const&) = default;
     value(value&&) = default;
@@ -60,13 +59,12 @@ public:
              typename = std::enable_if_t<std::is_same_v<T, bool>> >
     value& operator=(T);
 
-    //value& operator=(bool);
     value& operator=(number_t);
     value& operator=(char const*);
     value& operator=(std::string const&);
     value& operator=(std::string_view);
-    value& operator=(array); //TODO
-    value& operator=(object); //TODO
+    value& operator=(array const&);
+    value& operator=(object const&);
     value& operator=(null_t);
 
     ~value() = default;
@@ -81,19 +79,20 @@ public:
     bool is_null() const;
 
     // accessor
-    bool     get_bool() const;
-    number_t get_number() const;
-    string_t get_string() const;
-    array const&   get_array() const; //TODO
-    array&   get_array(); //TODO
-    object&  get_object(); //TODO
+    bool          get_bool() const;
+    number_t      get_number() const;
+    string_t      get_string() const;
+    array&        get_array();
+    array const&  get_array() const;
+    object&       get_object();
+    object const& get_object() const;
 
     // modifier
     void set_bool(bool);
     void set_number(number_t);
     void set_string(string_t);
-    void set_array(array);
-    void set_object(object);
+    void set_array(array const&);
+    void set_object(object const&);
     void set_null();
 
     // operator
@@ -106,21 +105,224 @@ public:
 
     bool operator==(value const&) const;
 
-    template<typename T,
-             typename = std::enable_if_t<std::is_same_v<T, bool>> >
-    bool operator==(T) const;
-
-#if 0
-    bool operator==(bool) const;
-#endif
     bool operator==(number_t) const;
     bool operator==(char const*) const;
     bool operator==(std::string const&) const;
     bool operator==(std::string_view) const;
+    bool operator==(array const&) const;
+    bool operator==(object const&) const;
     bool operator==(null_t) const;
 
+    template<typename T,
+             typename = std::enable_if_t<std::is_same_v<T, bool>> >
+    bool operator==(T) const;
+
+    bool operator!=(value const&) const;
+
+    bool operator!=(number_t) const;
+    bool operator!=(char const*) const;
+    bool operator!=(std::string const&) const;
+    bool operator!=(std::string_view) const;
+    bool operator!=(array const&) const;
+    bool operator!=(object const&) const;
+    bool operator!=(null_t) const;
+
+    template<typename T,
+             typename = std::enable_if_t<std::is_same_v<T, bool>> >
+    bool operator!=(T) const;
+
     friend std::ostream& operator<<(std::ostream&, value const&);
+    friend value parse(std::string_view);
 };
+
+inline value& value::
+operator=(number_t const v)
+{
+    set_number(v);
+    return *this;
+}
+
+inline value& value::
+operator=(char const* const v)
+{
+    set_string(v);
+    return *this;
+}
+
+inline value& value::
+operator=(std::string const& v)
+{
+    set_string(v);
+    return *this;
+}
+
+inline value& value::
+operator=(std::string_view const v)
+{
+    set_string(v);
+    return *this;
+}
+
+inline value& value::
+operator=(array const& v)
+{
+    set_array(v);
+    return *this;
+}
+
+inline value& value::
+operator=(object const& v)
+{
+    set_object(v);
+    return *this;
+}
+
+inline value& value::
+operator=(null_t)
+{
+    set_null();
+    return *this;
+}
+
+template<>
+inline value& value::
+operator=<bool, void>(bool const v)
+{
+    set_bool(v);
+    return *this;
+}
+
+inline bool value::
+operator!=(value const& rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool value::
+operator!=(value::number_t const rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool value::
+operator!=(char const* const rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool value::
+operator!=(std::string const& rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool value::
+operator!=(std::string_view const rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool value::
+operator!=(array const& rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool value::
+operator!=(object const& rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool value::
+operator!=(null_t const rhs) const
+{
+    return !(*this == rhs);
+}
+
+inline bool
+operator==(value::number_t const lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator==(char const* const lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator==(std::string const& lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator==(std::string_view const lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator==(array const& lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator==(object const& lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator==(null_t const lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator!=(value::number_t const lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
+
+inline bool
+operator!=(char const* const lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
+
+inline bool
+operator!=(std::string const& lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
+
+inline bool
+operator!=(std::string_view const lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
+
+inline bool
+operator!=(array const& lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
+
+inline bool
+operator!=(object const& lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
+
+inline bool
+operator!=(null_t const lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
 
 std::ostream& operator<<(std::ostream&, value::type);
 std::ostream& operator<<(std::ostream&, null_t);

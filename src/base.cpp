@@ -3,34 +3,54 @@
 #include "internal/allocator.hpp"
 #include "internal/underlying_value.hpp"
 
-#include <iostream>
+#include <string_view>
 
 namespace json {
 
+namespace rj = rapidjson;
+
 base::
 base()
-    : m_value { std::make_unique<value_type>() }
 {
-    std::cout << sizeof(value_type) << std::endl;
+    static_assert(sizeof(m_value) == sizeof(value_type));
+    new (&m_value) value_type;
 }
 
 base::
-base(std::unique_ptr<value_type> v)
-    : m_value { std::move(v) }
-{}
+base(bool const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(double const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(std::string_view const v)
+{
+    new (&m_value) value_type {
+        v.data(), static_cast<rj::SizeType>(v.size()), allocator() };
+}
 
 base::
 base(base const& other)
-    : m_value {
-        std::make_unique<value_type>(*other.m_value) }
-{}
+{
+    new (&m_value) value_type { other.base_value() };
+}
 
 base::
 base(base&& other)
-    : m_value { std::move(other.m_value) }
-{}
+{
+    swap(other);
+}
 
-base::~base() = default;
+base::~base()
+{
+    base_value().~value_type();
+}
 
 base& base::
 operator=(base const& rhs)
@@ -53,9 +73,22 @@ operator=(base&& rhs)
 }
 
 void base::
-swap(base& b)
+swap(base& other)
 {
-    m_value.swap(b.m_value);
+    base_value().Swap(other.base_value());
 }
+
+base::value_type& base::
+base_value()
+{
+    return reinterpret_cast<value_type&>(m_value);
+}
+
+base::value_type const& base::
+base_value() const
+{
+    return reinterpret_cast<value_type const&>(m_value);
+}
+
 
 } // namespace json

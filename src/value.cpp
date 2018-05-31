@@ -1,5 +1,8 @@
 #include "value.hpp"
 
+#include "array.hpp"
+#include "object.hpp"
+
 #include "internal/allocator.hpp"
 #include "internal/underlying_value.hpp"
 
@@ -21,49 +24,46 @@ namespace rj = rapidjson;
 
 // value
 
-#if 0
-value::
-value(bool const v)
-    : base { std::make_unique<value_type>(v) }
-{
-    LOG("value(bool)");
-}
-#endif
-
-template<>
-value::
-value<bool, void>(bool const v)
-    : base { std::make_unique<value_type>(v) }
-{
-    LOG("value(bool)");
-}
-
 value::
 value(number_t const v)
-    : base { std::make_unique<value_type>(v) }
+    : base { v }
 {
     LOG("value(number_t)");
 }
 
 value::
 value(char const* v)
-    : base { std::make_unique<value_type>(v, allocator()) }
+    : base { std::string_view(v) }
 {
     LOG("value(char const*)");
 }
 
 value::
 value(std::string const& v)
-    : base { std::make_unique<value_type>(v.data(), v.size(), allocator()) }
+    : base { v }
 {
     LOG("value(std::string const&)");
 }
 
 value::
 value(std::string_view const v)
-    : base { std::make_unique<value_type>(v.data(), v.size(), allocator()) }
+    : base { v }
 {
     LOG("value(std::string_view)");
+}
+
+value::
+value(array const& a)
+    : base { a }
+{
+    LOG("value(array const&)");
+}
+
+value::
+value(object const& o)
+    : base { o }
+{
+    LOG("value(object const&)");
 }
 
 value::
@@ -73,67 +73,12 @@ value(null_t)
     LOG("value(null_t)");
 }
 
-value::
-value(std::unique_ptr<value_type> v)
-    : base { std::move(v) }
-{}
-/*
-value& value::
-operator=(bool const v)
-{
-    LOG("operator=(bool)");
-    this->base_value().SetBool(v);
-    return *this;
-}
-*/
-
 template<>
-value& value::
-operator=<bool, void>(bool const v)
+value::
+value<bool, void>(bool const v)
+    : base { v }
 {
-    LOG("operator=(bool)");
-    set_bool(v);
-    return *this;
-}
-
-value& value::
-operator=(number_t const v)
-{
-    LOG("operator=(number_t)");
-    set_number(v);
-    return *this;
-}
-
-value& value::
-operator=(char const* const v)
-{
-    LOG("operator=(char const*)");
-    set_string(v);
-    return *this;
-}
-
-value& value::
-operator=(std::string const& v)
-{
-    LOG("operator=(std::string const&)");
-    set_string(v);
-    return *this;
-}
-
-value& value::
-operator=(std::string_view const v)
-{
-    LOG("operator=(std::string_view)");
-    set_string(v);
-    return *this;
-}
-
-value& value::
-operator=(null_t)
-{
-    LOG("operator=(null_t)");
-    set_null();
-    return *this;
+    LOG("value(bool)");
 }
 
 value::type value::
@@ -177,6 +122,18 @@ is_string() const
 }
 
 bool value::
+is_array() const
+{
+    return this->base_value().IsArray();
+}
+
+bool value::
+is_object() const
+{
+    return this->base_value().IsObject();
+}
+
+bool value::
 is_null() const
 {
     return this->base_value().IsNull();
@@ -185,32 +142,53 @@ is_null() const
 bool value::
 get_bool() const
 {
+    assert(is_bool());
     return this->base_value().GetBool();
 }
 
 value::number_t value::
 get_number() const
 {
+    assert(is_number());
     return this->base_value().GetDouble();
 }
 
 value::string_t value::
 get_string() const
 {
+    assert(is_string());
     auto& base = this->base_value();
 
     return { base.GetString(), base.GetStringLength() };
 }
 
-#if 0
 array& value::
 get_array()
 {
-    auto& base = this->base_value();
-    base.SetArray();
+    assert(is_array());
     return reinterpret_cast<array&>(*this);
 }
-#endif
+
+array const& value::
+get_array() const
+{
+    assert(is_array());
+    return reinterpret_cast<array const&>(*this);
+}
+
+object& value::
+get_object()
+{
+    assert(is_object());
+    return reinterpret_cast<object&>(*this);
+}
+
+object const& value::
+get_object() const
+{
+    assert(is_object());
+    return reinterpret_cast<object const&>(*this);
+}
 
 void value::
 set_bool(bool const v)
@@ -231,6 +209,20 @@ set_string(string_t const v)
 }
 
 void value::
+set_array(array const& a)
+{
+    value v { a };
+    *this = v;
+}
+
+void value::
+set_object(object const& o)
+{
+    value v { o };
+    *this = v;
+}
+
+void value::
 set_null()
 {
     this->base_value().SetNull();
@@ -240,23 +232,6 @@ bool value::
 operator==(value const& rhs) const
 {
     return this->base_value() == rhs.base_value();
-}
-
-#if 0
-bool value::
-operator==(bool const rhs) const
-{
-    LOG("operator==(bool)");
-    return this->base_value() == rhs;
-}
-#endif
-
-template<>
-bool value::
-operator==<bool, void>(bool const rhs) const
-{
-    LOG("operator==(bool)");
-    return this->base_value() == rhs;
 }
 
 bool value::
@@ -288,10 +263,32 @@ operator==(std::string_view const rhs) const
 }
 
 bool value::
+operator==(array const& rhs) const
+{
+    LOG("operator==(array const&)");
+    return this->base_value() == reinterpret_cast<value_type const&>(rhs);
+}
+
+bool value::
+operator==(object const& rhs) const
+{
+    LOG("operator==(object const&)");
+    return this->base_value() == reinterpret_cast<value_type const&>(rhs);
+}
+
+bool value::
 operator==(null_t) const
 {
     LOG("operator==(null_t)");
     return this->is_null();
+}
+
+template<>
+bool value::
+operator==<bool, void>(bool const rhs) const
+{
+    LOG("operator==(bool)");
+    return this->base_value() == rhs;
 }
 
 std::ostream&
