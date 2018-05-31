@@ -104,7 +104,7 @@ empty() const
 bool object::
 contain(key_type const key) const
 {
-    base::value_type const k { key.data(), //TODO reconsider size_type
+    base::value_type const k { key.data(),
                                static_cast<rj::SizeType>(key.size()) };
 
     return this->base_value().HasMember(k);
@@ -113,14 +113,14 @@ contain(key_type const key) const
 value& object::
 at(key_type const key)
 {
-    assert(contain(key)); //TODO throw exception
+    assert(contain(key));
     return operator[](key);
 }
 
 value const& object::
 at(key_type const key) const
 {
-    assert(contain(key)); //TODO throw exception
+    assert(contain(key));
     return operator[](key);
 }
 
