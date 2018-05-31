@@ -1,6 +1,5 @@
 #include <boost/test/unit_test.hpp>
 
-#include <json/json.hpp>
 #include <json/value.hpp>
 #include <json/array.hpp>
 #include <json/object.hpp>
@@ -8,13 +7,6 @@
 namespace json::testing {
 
 BOOST_AUTO_TEST_SUITE(value_)
-
-BOOST_AUTO_TEST_CASE(elementary)
-{
-    auto const text = R"({ "foo": "bar" })";
-
-    auto value = json::parse(text);
-}
 
 BOOST_AUTO_TEST_SUITE(constructor)
 
@@ -668,7 +660,13 @@ BOOST_AUTO_TEST_SUITE(query)
         v = "string";
         BOOST_TEST(v.get_type() == value::type::string);
 
-        //TODO array & object
+        json::array a;
+        v = a;
+        BOOST_TEST(v.get_type() == value::type::array);
+
+        json::object o;
+        v = o;
+        BOOST_TEST(v.get_type() == value::type::object);
     }
 
     BOOST_AUTO_TEST_CASE(is_null)
@@ -721,7 +719,7 @@ BOOST_AUTO_TEST_SUITE(query)
         BOOST_TEST(v.is_object());
     }
 
-    BOOST_AUTO_TEST_CASE(get_bool) //TODO error handling
+    BOOST_AUTO_TEST_CASE(get_bool)
     {
         json::value v { true };
 

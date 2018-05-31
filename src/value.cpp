@@ -1,7 +1,7 @@
-#include "value.hpp"
+#include <json/value.hpp>
 
-#include "array.hpp"
-#include "object.hpp"
+#include <json/array.hpp>
+#include <json/object.hpp>
 
 #include "internal/allocator.hpp"
 #include "internal/underlying_value.hpp"

@@ -1,7 +1,8 @@
 #ifndef JSON_UNDERLYING_VALUE
 #define JSON_UNDERLYING_VALUE
 
-#include "../base.hpp"
+#include <json/base.hpp>
+
 #include "allocator.hpp"
 
 #include <rapidjson/document.h>
