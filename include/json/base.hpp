@@ -2,7 +2,7 @@
 #define JSON_BASE_HPP
 
 #include <string_view>
-
+#include <type_traits>
 
 namespace json {
 

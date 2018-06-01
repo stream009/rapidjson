@@ -1,8 +1,8 @@
 #ifndef JSON_OBJECT_HPP
 #define JSON_OBJECT_HPP
 
-#include "base.hpp"
-#include "value.hpp"
+#include <json/base.hpp>
+#include <json/value.hpp>
 
 namespace json {
 

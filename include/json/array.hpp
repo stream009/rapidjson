@@ -1,7 +1,7 @@
 #ifndef JSON_ARRAY_HPP
 #define JSON_ARRAY_HPP
 
-#include "base.hpp"
+#include <json/base.hpp>
 
 #include <iosfwd>
 

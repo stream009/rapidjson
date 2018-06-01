@@ -1,7 +1,7 @@
 #ifndef JSON_VALUE_HPP
 #define JSON_VALUE_HPP
 
-#include "base.hpp"
+#include <json/base.hpp>
 
 #include <iosfwd>
 #include <string>
