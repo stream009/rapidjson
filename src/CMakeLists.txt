@@ -3,8 +3,6 @@ include_directories(
     "${THIRD_PARTY_DIR}/rapidjson/include"
 )
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib")
-
 add_library(json STATIC
     internal/allocator.cpp
     base.cpp
@@ -12,4 +10,7 @@ add_library(json STATIC
     array.cpp
     object.cpp
     json.cpp
+)
+set_target_properties(json PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
 )
