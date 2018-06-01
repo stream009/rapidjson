@@ -6,6 +6,7 @@ C++ wrapper for RapidJSON
   RapidJSON's huge header files in every relevant translation unit.
 ## requirement
 - C++17 compiler
+- cmake
 - Boost.Test
 ## usage
 1. import into client project
