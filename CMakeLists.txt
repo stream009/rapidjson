@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(THIRD_PARTY_DIR "${CMAKE_SOURCE_DIR}/thirdparty")
+set(THIRD_PARTY_DIR "${PROJECT_SOURCE_DIR}/thirdparty")
 
 add_subdirectory(src)
 
