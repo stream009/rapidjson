@@ -6,13 +6,13 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
-add_executable(main
+add_executable(test_json
     main.cpp
     value.cpp
     array.cpp
     object.cpp
 )
-target_link_libraries(main
+target_link_libraries(test_json
     ${Boost_LIBRARIES}
     json
 )
