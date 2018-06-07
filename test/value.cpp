@@ -797,7 +797,7 @@ BOOST_AUTO_TEST_SUITE(query)
         auto& o2 = vc.get_object();
 
         BOOST_REQUIRE(o2.size() == 1);
-        BOOST_TEST(o2["foo"] == true);
+        BOOST_TEST(o2.at("foo") == true);
     }
 
 BOOST_AUTO_TEST_SUITE_END() // query
@@ -862,7 +862,7 @@ BOOST_AUTO_TEST_SUITE(modifier)
         auto const& o2 = v.get_object();
 
         BOOST_TEST(o2.size() == 1);
-        BOOST_TEST(o2["foo"] == 10);
+        BOOST_TEST(o2.at("foo") == 10);
     }
 
     BOOST_AUTO_TEST_CASE(set_null)

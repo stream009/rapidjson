@@ -121,8 +121,15 @@ at(key_type const key)
 value const& object::
 at(key_type const key) const
 {
-    assert(contain(key));
-    return operator[](key);
+    if (!contain(key)) {
+        throw std::out_of_range("json::object::at");
+    }
+
+    base::value_type const k { key.data(),
+                               static_cast<rj::SizeType>(key.size()) };
+    auto const& v = this->base_value().operator[](k);
+
+    return reinterpret_cast<value const&>(v);
 }
 
 value& object::
@@ -142,16 +149,6 @@ operator[](key_type const key)
     auto& v = this->base_value().operator[](k);
 
     return reinterpret_cast<value&>(v);
-}
-
-value const& object::
-operator[](key_type const key) const
-{
-    base::value_type const k { key.data(),
-                               static_cast<rj::SizeType>(key.size()) };
-    auto const& v = this->base_value().operator[](k);
-
-    return reinterpret_cast<value const&>(v);
 }
 
 object::iterator object::

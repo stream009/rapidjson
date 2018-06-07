@@ -41,7 +41,6 @@ public:
     value& at(key_type);
     value const& at(key_type) const;
     value& operator[](key_type);
-    value const& operator[](key_type) const;
 
     // iterator
     iterator begin();
