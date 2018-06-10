@@ -10,6 +10,8 @@ add_library(json STATIC
     array.cpp
     object.cpp
     json.cpp
+    parse_error.cpp
+    pointer_error.cpp
 )
 set_target_properties(json PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
