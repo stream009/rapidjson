@@ -15,7 +15,7 @@ class object;
 
 struct null_t {};
 
-static null_t null;
+extern null_t null;
 
 // value
 

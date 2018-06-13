@@ -169,6 +169,6 @@ operator<<(std::ostream& os, parse_errc const ev)
     }
 
     return os;
-};
+}
 
 } // namespace

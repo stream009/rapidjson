@@ -118,6 +118,6 @@ operator<<(std::ostream& os, pointer_errc const ev)
     }
 
     return os;
-};
+}
 
 } // namespace

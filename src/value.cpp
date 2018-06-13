@@ -22,6 +22,8 @@ namespace json {
 
 namespace rj = rapidjson;
 
+null_t null;
+
 // value
 
 value::
