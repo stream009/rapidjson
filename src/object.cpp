@@ -103,7 +103,7 @@ empty() const
 }
 
 bool object::
-contain(key_type const key) const
+contains(key_type const key) const
 {
     base::value_type const k { key.data(),
                                static_cast<rj::SizeType>(key.size()) };
@@ -114,14 +114,14 @@ contain(key_type const key) const
 value& object::
 at(key_type const key)
 {
-    assert(contain(key));
+    assert(contains(key));
     return operator[](key);
 }
 
 value const& object::
 at(key_type const key) const
 {
-    if (!contain(key)) {
+    if (!contains(key)) {
         throw std::out_of_range("json::object::at");
     }
 
@@ -135,7 +135,7 @@ at(key_type const key) const
 value& object::
 operator[](key_type const key)
 {
-    if (!contain(key)) {
+    if (!contains(key)) {
         auto& a = allocator();
         base::value_type k { key.data(),
                        static_cast<rj::SizeType>(key.size()), a };

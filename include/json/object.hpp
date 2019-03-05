@@ -35,7 +35,7 @@ public:
     size_type size() const;
     size_type capacity() const;
     bool empty() const;
-    bool contain(key_type) const;
+    bool contains(key_type) const;
 
     // accessor
     value& at(key_type);

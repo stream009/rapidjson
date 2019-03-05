@@ -160,15 +160,15 @@ BOOST_AUTO_TEST_SUITE(query)
         BOOST_TEST(o.empty());
     }
 
-    BOOST_AUTO_TEST_CASE(contain)
+    BOOST_AUTO_TEST_CASE(contains)
     {
         json::object o;
 
         o["foo"] = true;
         o["bar"] = false;
 
-        BOOST_TEST(o.contain("foo"));
-        BOOST_TEST(!o.contain("xyzzy"));
+        BOOST_TEST(o.contains("foo"));
+        BOOST_TEST(!o.contains("xyzzy"));
     }
 
 BOOST_AUTO_TEST_SUITE_END() // query
