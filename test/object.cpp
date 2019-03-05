@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_SUITE(accessor)
         json::object o;
 
         o["foo"] = 1;
-        auto oc = o;
+        auto const& oc = o;
         BOOST_TEST(oc["foo"] == 1);
     }
 
