@@ -87,6 +87,7 @@ value::type value::
 get_type() const
 {
     switch (this->base_value().GetType()) {
+        default:
         case rj::kNullType:
             return type::null;
         case rj::kFalseType:
@@ -100,8 +101,6 @@ get_type() const
             return type::string;
         case rj::kNumberType:
             return type::number;
-        default:
-            assert(false);
     }
 }
 

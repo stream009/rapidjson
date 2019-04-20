@@ -15,6 +15,7 @@ to_rapid(int ev)
     using namespace rapidjson;
 
     switch (static_cast<e>(ev)) {
+        default:
         case e::none:
             return kParseErrorNone;
         case e::document_empty:
@@ -51,8 +52,6 @@ to_rapid(int ev)
             return kParseErrorTermination;
         case e::unspecific_syntax_error:
             return kParseErrorUnspecificSyntaxError;
-        default:
-            assert(false && "unknown error value");
     }
 }
 
@@ -110,6 +109,7 @@ operator<<(std::ostream& os, parse_errc const ev)
     using e = parse_errc;
 
     switch (ev) {
+        default:
         case e::none:
             os << "none";
             break;
@@ -164,8 +164,6 @@ operator<<(std::ostream& os, parse_errc const ev)
         case e::unspecific_syntax_error:
             os << "unspecific_syntax_error";
             break;
-        default:
-            assert(false && "unknown error value");
     }
 
     return os;

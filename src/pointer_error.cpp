@@ -14,6 +14,7 @@ to_rapid(int ev)
     using namespace rapidjson;
 
     switch (static_cast<e>(ev)) {
+        default:
         case e::none:
             return kPointerParseErrorNone;
         case e::token_must_begin_with_solidus:
@@ -24,8 +25,6 @@ to_rapid(int ev)
             return kPointerParseErrorInvalidPercentEncoding;
         case e::character_must_percent_encode:
             return kPointerParseErrorCharacterMustPercentEncode;
-        default:
-            assert(false && "unknown error value");
     }
 }
 
@@ -50,6 +49,7 @@ message(int const ev) const
     using namespace rapidjson;
 
     switch (to_rapid(ev)) {
+        default:
         case kPointerParseErrorNone:
             return "The parse is successful.";
         case kPointerParseErrorTokenMustBeginWithSolidus:
@@ -60,8 +60,6 @@ message(int const ev) const
             return "Invalid percent encoding in URI fragment.";
         case kPointerParseErrorCharacterMustPercentEncode:
             return "A character must percent encoded in URI fragment.";
-        default:
-            assert(false && "unknown error value");
     }
 }
 
