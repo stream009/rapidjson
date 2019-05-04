@@ -43,31 +43,4 @@ stringify(value const& v)
     return sb.GetString();
 }
 
-value*
-find(value& v, std::string_view const pointer)
-{
-    rj::Pointer const p { pointer.data(), pointer.size() };
-    if (!p.IsValid()) {
-        throw pointer_error {
-            make_pointer_error_code(p.GetParseErrorCode()),
-            p.GetParseErrorOffset() };
-    }
-
-    return reinterpret_cast<value*>(p.Get(reinterpret_cast<rj::Value&>(v)));
-}
-
-value const*
-find(value const& v, std::string_view const pointer)
-{
-    rj::Pointer const p { pointer.data(), pointer.size() };
-    if (!p.IsValid()) {
-        throw pointer_error {
-            make_pointer_error_code(p.GetParseErrorCode()),
-            p.GetParseErrorOffset() };
-    }
-
-    return reinterpret_cast<value const*>(
-                            p.Get(reinterpret_cast<rj::Value const&>(v)));
-}
-
 } // namespace json

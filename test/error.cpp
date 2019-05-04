@@ -1,7 +1,8 @@
 #include <boost/test/unit_test.hpp>
 
-#include <json/json.hpp>
 #include <json/error.hpp>
+#include <json/json.hpp>
+#include <json/pointer.hpp>
 
 #include <iostream>
 
@@ -131,7 +132,7 @@ BOOST_AUTO_TEST_SUITE(pointer_error_)
     {
         json::value v;
         BOOST_CHECK_EXCEPTION(
-            json::find(v, pointer),
+            v.find(pointer),
             pointer_error,
             [&](auto const& ex) {
                 //std::cout << ex.what() << "\n";

@@ -2,11 +2,15 @@
 
 #include <json/array.hpp>
 #include <json/object.hpp>
+#include <json/pointer.hpp>
 
 #include "internal/allocator.hpp"
 #include "internal/underlying_value.hpp"
 
+#include <stdexcept>
+
 #include <rapidjson/ostreamwrapper.h>
+#include <rapidjson/pointer.h>
 #include <rapidjson/writer.h>
 
 //#define DEBUG_VERBOSE
@@ -227,6 +231,66 @@ void value::
 set_null()
 {
     this->base_value().SetNull();
+}
+
+value const* value::
+find(pointer const& p) const
+{
+    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
+
+    return reinterpret_cast<value const*>(
+        base.Get(reinterpret_cast<rj::Value const&>(*this))
+    );
+}
+
+value* value::
+find(pointer const& p)
+{
+    return const_cast<value*>(
+        const_cast<value const*>(this)->find(p)
+    );
+}
+
+value const& value::
+at(pointer const& p) const
+{
+    auto* const v = find(p);
+    if (v == nullptr) {
+        throw std::out_of_range("json::value::at");
+    }
+
+    return *v;
+}
+
+value& value::
+at(pointer const& p)
+{
+    return const_cast<value&>(
+        const_cast<value const*>(this)->at(p)
+    );
+}
+
+value& value::
+operator[](pointer const& p)
+{
+    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
+
+    return reinterpret_cast<value&>(
+        base.Create(reinterpret_cast<rj::Value&>(*this), allocator())
+    );
+}
+
+void value::
+erase(pointer const& p)
+{
+    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
+    base.Erase(reinterpret_cast<rj::Value&>(*this));
+}
+
+bool value::
+contains(pointer const& p) const
+{
+    return find(p) != nullptr;
 }
 
 bool value::

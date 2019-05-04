@@ -7,6 +7,7 @@ add_library(json STATIC
     json.cpp
     parse_error.cpp
     pointer_error.cpp
+    pointer.cpp
 )
 target_include_directories(json
     PUBLIC

@@ -12,6 +12,7 @@ namespace json {
 class array;
 class base;
 class object;
+class pointer;
 
 struct null_t {};
 
@@ -93,6 +94,15 @@ public:
     void set_array(array const&);
     void set_object(object const&);
     void set_null();
+
+    // pointer
+    value const* find(pointer const&) const;
+    value*       find(pointer const&);
+    value const& at(pointer const&) const;
+    value&       at(pointer const&);
+    value&       operator[](pointer const&);
+    void         erase(pointer const&);
+    bool         contains(pointer const&) const;
 
     // operator
     template<typename T,

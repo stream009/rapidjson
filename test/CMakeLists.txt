@@ -10,6 +10,7 @@ add_executable(test_json
     array.cpp
     object.cpp
     error.cpp
+    pointer.cpp
 )
 target_link_libraries(test_json
     ${Boost_LIBRARIES}
