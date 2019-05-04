@@ -685,6 +685,67 @@ BOOST_AUTO_TEST_SUITE(query)
         BOOST_TEST(v.is_bool());
     }
 
+    BOOST_AUTO_TEST_CASE(is_int32)
+    {
+        json::value v { 1 };
+        BOOST_TEST(v.is_int32());
+        BOOST_TEST(v.is_number());
+
+        v = -100;
+        BOOST_TEST(v.is_int32());
+
+        v = static_cast<int64_t>(100);
+        BOOST_TEST(v.is_int32());
+
+        v = static_cast<int64_t>(INT_MAX) + 1;
+        BOOST_TEST(!v.is_int32());
+    }
+
+    BOOST_AUTO_TEST_CASE(is_uint32)
+    {
+        json::value v { 1u };
+        BOOST_TEST(v.is_uint32());
+        BOOST_TEST(v.is_number());
+
+        v = static_cast<uint64_t>(100);
+        BOOST_TEST(v.is_uint32());
+
+        v = static_cast<uint64_t>(UINT_MAX) + 1;
+        BOOST_TEST(!v.is_uint32());
+    }
+
+    BOOST_AUTO_TEST_CASE(is_int64)
+    {
+        json::value v { 1ll };
+        BOOST_TEST(v.is_int64());
+        BOOST_TEST(v.is_number());
+
+        v = -100ll;
+        BOOST_TEST(v.is_int64());
+
+        v = static_cast<int64_t>(100);
+        BOOST_TEST(v.is_int64());
+
+        v = static_cast<int64_t>(INT_MAX) + 1;
+        BOOST_TEST(v.is_int64());
+
+        v = static_cast<int64_t>(INT_MIN) - 1;
+        BOOST_TEST(v.is_int64());
+    }
+
+    BOOST_AUTO_TEST_CASE(is_uint64)
+    {
+        json::value v { 1ull };
+        BOOST_TEST(v.is_uint64());
+        BOOST_TEST(v.is_number());
+
+        v = static_cast<int64_t>(100);
+        BOOST_TEST(v.is_int64());
+
+        v = static_cast<int64_t>(INT_MAX) + 1;
+        BOOST_TEST(v.is_int64());
+    }
+
     BOOST_AUTO_TEST_CASE(is_number)
     {
         json::value v { 1 };
@@ -726,6 +787,34 @@ BOOST_AUTO_TEST_SUITE(query)
         bool b = v.get_bool();
 
         BOOST_TEST(b == true);
+    }
+
+    BOOST_AUTO_TEST_CASE(get_int32)
+    {
+        json::value v = 1;
+
+        BOOST_TEST(v.get_int32() == 1);
+    }
+
+    BOOST_AUTO_TEST_CASE(get_uint32)
+    {
+        json::value v = 1u;
+
+        BOOST_TEST(v.get_uint32() == 1);
+    }
+
+    BOOST_AUTO_TEST_CASE(get_int64)
+    {
+        json::value v = 1ll;
+
+        BOOST_TEST(v.get_int64() == 1);
+    }
+
+    BOOST_AUTO_TEST_CASE(get_uint64)
+    {
+        json::value v = 1ull;
+
+        BOOST_TEST(v.get_uint64() == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_number)
@@ -810,6 +899,42 @@ BOOST_AUTO_TEST_SUITE(modifier)
         v.set_bool(true);
 
         BOOST_TEST(v == true);
+    }
+
+    BOOST_AUTO_TEST_CASE(set_int32)
+    {
+        json::value v;
+        v.set_int32(100);
+
+        BOOST_TEST(v.is_int32());
+        BOOST_TEST(v == 100);
+    }
+
+    BOOST_AUTO_TEST_CASE(set_uint32)
+    {
+        json::value v;
+        v.set_uint32(100);
+
+        BOOST_TEST(v.is_uint32());
+        BOOST_TEST(v == 100);
+    }
+
+    BOOST_AUTO_TEST_CASE(set_int64)
+    {
+        json::value v;
+        v.set_int64(100);
+
+        BOOST_TEST(v.is_int64());
+        BOOST_TEST(v == 100);
+    }
+
+    BOOST_AUTO_TEST_CASE(set_uint64)
+    {
+        json::value v;
+        v.set_uint64(100);
+
+        BOOST_TEST(v.is_uint64());
+        BOOST_TEST(v == 100);
     }
 
     BOOST_AUTO_TEST_CASE(set_number)

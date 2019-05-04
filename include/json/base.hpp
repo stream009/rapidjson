@@ -13,17 +13,26 @@ public:
 
 protected:
     base();
-    base(bool);
-    base(double);
-    base(std::string_view);
+    ~base();
 
     base(base const&);
     base(base&&);
 
-    ~base();
-
     base& operator=(base const&);
     base& operator=(base&&);
+
+    base(bool);
+    base(int32_t);
+    base(uint32_t);
+    base(int64_t);
+    base(uint64_t);
+    base(long long);
+    base(unsigned long long);
+
+    base(double);
+    base(long double);
+
+    base(std::string_view);
 
     void swap(base& b);
 

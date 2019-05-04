@@ -37,41 +37,62 @@ public:
 
 public:
     value() = default;
-
-    value(number_t);
-    value(char const*);
-    value(std::string const&);
-    value(std::string_view);
-    value(array const&);
-    value(object const&);
-    value(null_t);
-
-    template<typename T,
-             typename = std::enable_if_t<std::is_same_v<T, bool>> >
-    value(T);
+    ~value() = default;
 
     value(value const&) = default;
     value(value&&) = default;
     value& operator=(value const&) = default;
     value& operator=(value&&) = default;
 
-    template<typename T,
-             typename = std::enable_if_t<std::is_same_v<T, bool>> >
-    value& operator=(T);
+    template<typename Bool,
+         typename = std::enable_if_t<std::is_same_v<Bool, bool>> >
+    value(Bool);
 
-    value& operator=(number_t);
+    value(int32_t);
+    value(uint32_t);
+    value(int64_t);
+    value(uint64_t);
+    value(long long);
+    value(unsigned long long);
+    value(double);
+    value(long double);
+
+    value(char const*);
+    value(std::string const&);
+    value(std::string_view);
+
+    value(array const&);
+    value(object const&);
+    value(null_t);
+
+    template<typename Bool,
+         typename = std::enable_if_t<std::is_same_v<Bool, bool>> >
+    value& operator=(Bool);
+
+    value& operator=(int32_t);
+    value& operator=(uint32_t);
+    value& operator=(int64_t);
+    value& operator=(uint64_t);
+    value& operator=(long long);
+    value& operator=(unsigned long long);
+    value& operator=(double);
+    value& operator=(long double);
+
     value& operator=(char const*);
     value& operator=(std::string const&);
     value& operator=(std::string_view);
+
     value& operator=(array const&);
     value& operator=(object const&);
     value& operator=(null_t);
 
-    ~value() = default;
-
     // query
     type get_type() const;
     bool is_bool() const;
+    bool is_int32() const;
+    bool is_uint32() const;
+    bool is_int64() const;
+    bool is_uint64() const;
     bool is_number() const;
     bool is_string() const;
     bool is_array() const;
@@ -80,6 +101,10 @@ public:
 
     // accessor
     bool          get_bool() const;
+    int32_t       get_int32() const;
+    uint32_t      get_uint32() const;
+    int64_t       get_int64() const;
+    uint64_t      get_uint64() const;
     number_t      get_number() const;
     string_t      get_string() const;
     array&        get_array();
@@ -89,6 +114,10 @@ public:
 
     // modifier
     void set_bool(bool);
+    void set_int32(int32_t);
+    void set_int64(int64_t);
+    void set_uint32(uint32_t);
+    void set_uint64(uint64_t);
     void set_number(number_t);
     void set_string(string_t);
     void set_array(array const&);
@@ -145,9 +174,58 @@ public:
 };
 
 inline value& value::
-operator=(number_t const v)
+operator=(int32_t const i)
 {
-    set_number(v);
+    set_int32(i);
+    return *this;
+}
+
+inline value& value::
+operator=(uint32_t const i)
+{
+    set_uint32(i);
+    return *this;
+}
+
+inline value& value::
+operator=(int64_t const i)
+{
+    set_int64(i);
+    return *this;
+}
+
+inline value& value::
+operator=(uint64_t const i)
+{
+    set_uint64(i);
+    return *this;
+}
+
+inline value& value::
+operator=(long long const i)
+{
+    set_int64(i);
+    return *this;
+}
+
+inline value& value::
+operator=(unsigned long long const i)
+{
+    set_uint64(i);
+    return *this;
+}
+
+inline value& value::
+operator=(double const d)
+{
+    set_number(d);
+    return *this;
+}
+
+inline value& value::
+operator=(long double const d)
+{
+    set_number(d);
     return *this;
 }
 

@@ -31,7 +31,56 @@ null_t null;
 // value
 
 value::
-value(number_t const v)
+value(int32_t const v)
+    : base { v }
+{
+    LOG("value(number_t)");
+}
+
+value::
+value(uint32_t const v)
+    : base { v }
+{
+    LOG("value(number_t)");
+}
+
+value::
+value(int64_t const v)
+    : base { v }
+{
+    LOG("value(number_t)");
+}
+
+value::
+value(uint64_t const v)
+    : base { v }
+{
+    LOG("value(number_t)");
+}
+
+value::
+value(long long const v)
+    : base { v }
+{
+    LOG("value(number_t)");
+}
+
+value::
+value(unsigned long long const v)
+    : base { v }
+{
+    LOG("value(number_t)");
+}
+
+value::
+value(double const v)
+    : base { v }
+{
+    LOG("value(number_t)");
+}
+
+value::
+value(long double const v)
     : base { v }
 {
     LOG("value(number_t)");
@@ -115,6 +164,30 @@ is_bool() const
 }
 
 bool value::
+is_int32() const
+{
+    return this->base_value().IsInt();
+}
+
+bool value::
+is_uint32() const
+{
+    return this->base_value().IsUint();
+}
+
+bool value::
+is_int64() const
+{
+    return this->base_value().IsInt64();
+}
+
+bool value::
+is_uint64() const
+{
+    return this->base_value().IsUint64();
+}
+
+bool value::
 is_number() const
 {
     return this->base_value().IsNumber();
@@ -149,6 +222,34 @@ get_bool() const
 {
     assert(is_bool());
     return this->base_value().GetBool();
+}
+
+int32_t value::
+get_int32() const
+{
+    assert(is_int32());
+    return this->base_value().GetInt();
+}
+
+uint32_t value::
+get_uint32() const
+{
+    assert(is_uint32());
+    return this->base_value().GetUint();
+}
+
+int64_t value::
+get_int64() const
+{
+    assert(is_int64());
+    return this->base_value().GetInt64();
+}
+
+uint64_t value::
+get_uint64() const
+{
+    assert(is_uint64());
+    return this->base_value().GetUint64();
 }
 
 value::number_t value::
@@ -199,6 +300,30 @@ void value::
 set_bool(bool const v)
 {
     this->base_value().SetBool(v);
+}
+
+void value::
+set_int32(int32_t const i)
+{
+    this->base_value().SetInt(i);
+}
+
+void value::
+set_int64(int64_t const i)
+{
+    this->base_value().SetInt64(i);
+}
+
+void value::
+set_uint32(uint32_t const i)
+{
+    this->base_value().SetUint(i);
+}
+
+void value::
+set_uint64(uint64_t const i)
+{
+    this->base_value().SetUint64(i);
 }
 
 void value::

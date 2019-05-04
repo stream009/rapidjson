@@ -16,23 +16,9 @@ base()
     new (&m_value) value_type;
 }
 
-base::
-base(bool const v)
+base::~base()
 {
-    new (&m_value) value_type { v };
-}
-
-base::
-base(double const v)
-{
-    new (&m_value) value_type { v };
-}
-
-base::
-base(std::string_view const v)
-{
-    new (&m_value) value_type {
-        v.data(), static_cast<rj::SizeType>(v.size()), allocator() };
+    base_value().~value_type();
 }
 
 base::
@@ -46,11 +32,6 @@ base(base&& other)
 {
     new (&m_value) value_type;
     swap(other);
-}
-
-base::~base()
-{
-    base_value().~value_type();
 }
 
 base& base::
@@ -71,6 +52,67 @@ operator=(base&& rhs)
     swap(tmp);
 
     return *this;
+}
+
+base::
+base(bool const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(int32_t const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(uint32_t const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(int64_t const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(uint64_t const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(long long const v)
+{
+    new (&m_value) value_type { static_cast<int64_t>(v) };
+}
+
+base::
+base(unsigned long long const v)
+{
+    new (&m_value) value_type { static_cast<uint64_t>(v) };
+}
+
+base::
+base(double const v)
+{
+    new (&m_value) value_type { v };
+}
+
+base::
+base(long double const v)
+{
+    new (&m_value) value_type { static_cast<double>(v) };
+}
+
+base::
+base(std::string_view const v)
+{
+    new (&m_value) value_type {
+        v.data(), static_cast<rj::SizeType>(v.size()), allocator() };
 }
 
 void base::
