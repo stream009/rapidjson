@@ -44,6 +44,7 @@ base(base const& other)
 base::
 base(base&& other)
 {
+    new (&m_value) value_type;
     swap(other);
 }
 
