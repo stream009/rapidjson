@@ -5,6 +5,10 @@
 #include <string>
 
 #include <json/value.hpp>
+#include <json/object.hpp>
+#include <json/array.hpp>
+#include <json/pointer.hpp>
+#include <json/error.hpp>
 
 namespace json {
 
