@@ -55,7 +55,6 @@ public:
     value(long long);
     value(unsigned long long);
     value(double);
-    value(long double);
 
     value(char const*);
     value(std::string const&);
@@ -76,7 +75,6 @@ public:
     value& operator=(long long);
     value& operator=(unsigned long long);
     value& operator=(double);
-    value& operator=(long double);
 
     value& operator=(char const*);
     value& operator=(std::string const&);
@@ -217,13 +215,6 @@ operator=(unsigned long long const i)
 
 inline value& value::
 operator=(double const d)
-{
-    set_number(d);
-    return *this;
-}
-
-inline value& value::
-operator=(long double const d)
 {
     set_number(d);
     return *this;

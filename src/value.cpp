@@ -80,13 +80,6 @@ value(double const v)
 }
 
 value::
-value(long double const v)
-    : base { v }
-{
-    LOG("value(number_t)");
-}
-
-value::
 value(char const* v)
     : base { std::string_view(v) }
 {

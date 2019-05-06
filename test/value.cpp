@@ -231,17 +231,6 @@ BOOST_AUTO_TEST_SUITE(constructor)
         BOOST_TEST(v2 == i);
     }
 
-    BOOST_AUTO_TEST_CASE(long_double)
-    {
-        long double i = 1.0;
-
-        json::value v(i); // implicit narrowing
-        BOOST_TEST(v == i);
-
-        json::value v2 = i; // conversion
-        BOOST_TEST(v2 == i);
-    }
-
     BOOST_AUTO_TEST_CASE(char_array)
     {
         char s[] = "string";
@@ -528,16 +517,6 @@ BOOST_AUTO_TEST_SUITE(assignment)
     BOOST_AUTO_TEST_CASE(double_)
     {
         double i = 1.0;
-        json::value v;
-
-        v = i;
-
-        BOOST_TEST(v == i);
-    }
-
-    BOOST_AUTO_TEST_CASE(long_double)
-    {
-        long double i = 1.0;
         json::value v;
 
         v = i;

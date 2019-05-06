@@ -30,7 +30,6 @@ protected:
     base(unsigned long long);
 
     base(double);
-    base(long double);
 
     base(std::string_view);
 

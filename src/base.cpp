@@ -103,16 +103,9 @@ base(double const v)
 }
 
 base::
-base(long double const v)
-{
-    new (&m_value) value_type { static_cast<double>(v) };
-}
-
-base::
 base(std::string_view const v)
 {
-    new (&m_value) value_type {
-        v.data(), static_cast<rj::SizeType>(v.size()), allocator() };
+    new (&m_value) value_type { v.data(), to_rj_size(v.size()), allocator() };
 }
 
 void base::
