@@ -1,8 +1,9 @@
 #ifndef JSON_JSON_HPP
 #define JSON_JSON_HPP
 
-#include <string_view>
+#include <iosfwd>
 #include <string>
+#include <string_view>
 
 #include <json/value.hpp>
 #include <json/object.hpp>
@@ -13,6 +14,7 @@
 namespace json {
 
 value parse(std::string_view);
+value parse(std::istream&);
 
 std::string stringify(value const&);
 

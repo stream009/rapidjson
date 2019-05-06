@@ -169,6 +169,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream&, value const&);
     friend value parse(std::string_view);
+    friend value parse(std::istream&);
 };
 
 inline value& value::
