@@ -5,6 +5,7 @@
 #include <json/pointer.hpp>
 
 #include "internal/allocator.hpp"
+#include "internal/convert.hpp"
 #include "internal/underlying_value.hpp"
 
 #include <stdexcept>
@@ -328,7 +329,11 @@ set_number(number_t const v)
 void value::
 set_string(string_t const v)
 {
-    this->base_value().SetString(v.data(), v.size(), allocator());
+    this->base_value().SetString(
+        v.data(),
+        to_rj_size(v.size()),
+        allocator()
+    );
 }
 
 void value::
@@ -435,14 +440,18 @@ bool value::
 operator==(std::string const& rhs) const
 {
     LOG("operator==(std::string const&)");
-    return this->base_value() == value_type(rhs.data(), rhs.size());
+
+    value_type const v { rhs.data(), to_rj_size(rhs.size()) };
+    return this->base_value() == v;
 }
 
 bool value::
 operator==(std::string_view const rhs) const
 {
     LOG("operator==(std::string_view)");
-    return this->base_value() == value_type(rhs.data(), rhs.size());
+
+    value_type const v { rhs.data(), to_rj_size(rhs.size()) };
+    return this->base_value() == v;
 }
 
 bool value::

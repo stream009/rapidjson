@@ -2,6 +2,7 @@
 
 #include <json/value.hpp>
 
+#include "internal/convert.hpp"
 #include "internal/underlying_value.hpp"
 
 namespace json {
@@ -36,7 +37,8 @@ value& array::
 at(size_type const index)
 {
     assert(index < size());
-    auto& v = this->base_value().operator[](index);
+
+    auto& v = this->base_value().operator[](to_rj_size(index));
     return reinterpret_cast<value&>(v);
 }
 
@@ -44,21 +46,22 @@ value const& array::
 at(size_type const index) const
 {
     assert(index < size());
-    auto const& v = this->base_value().operator[](index);
+
+    auto& v = this->base_value().operator[](to_rj_size(index));
     return reinterpret_cast<value const&>(v);
 }
 
 value& array::
 operator[](size_type const index)
 {
-    auto& v = this->base_value().operator[](index);
+    auto& v = this->base_value().operator[](to_rj_size(index));
     return reinterpret_cast<value&>(v);
 }
 
 value const& array::
 operator[](size_type const index) const
 {
-    auto const& v = this->base_value().operator[](index);
+    auto& v = this->base_value().operator[](to_rj_size(index));
     return reinterpret_cast<value const&>(v);
 }
 
@@ -119,7 +122,7 @@ clear()
 void array::
 reserve(size_type const s)
 {
-    this->base_value().Reserve(s, allocator());
+    this->base_value().Reserve(to_rj_size(s), allocator());
 }
 
 void array::

@@ -1,6 +1,7 @@
 #include <json/base.hpp>
 
 #include "internal/allocator.hpp"
+#include "internal/convert.hpp"
 #include "internal/underlying_value.hpp"
 
 #include <string_view>

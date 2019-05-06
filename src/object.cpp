@@ -2,6 +2,7 @@
 
 #include <json/value.hpp>
 
+#include "internal/convert.hpp"
 #include "internal/underlying_value.hpp"
 
 namespace json {
@@ -105,8 +106,7 @@ empty() const
 bool object::
 contains(key_type const key) const
 {
-    base::value_type const k { key.data(),
-                               static_cast<rj::SizeType>(key.size()) };
+    base::value_type const k { key.data(), to_rj_size(key.size()) };
 
     return this->base_value().HasMember(k);
 }
@@ -125,8 +125,7 @@ at(key_type const key) const
         throw std::out_of_range("json::object::at");
     }
 
-    base::value_type const k { key.data(),
-                               static_cast<rj::SizeType>(key.size()) };
+    base::value_type const k { key.data(), to_rj_size(key.size()) };
     auto const& v = this->base_value().operator[](k);
 
     return reinterpret_cast<value const&>(v);
@@ -137,15 +136,13 @@ operator[](key_type const key)
 {
     if (!contains(key)) {
         auto& a = allocator();
-        base::value_type k { key.data(),
-                       static_cast<rj::SizeType>(key.size()), a };
+        base::value_type k { key.data(), to_rj_size(key.size()) };
         base::value_type v;
 
         this->base_value().AddMember(k, v, a);
     }
 
-    base::value_type const k { key.data(),
-                               static_cast<rj::SizeType>(key.size()) };
+    base::value_type const k { key.data(), to_rj_size(key.size()) };
     auto& v = this->base_value().operator[](k);
 
     return reinterpret_cast<value&>(v);
@@ -178,8 +175,7 @@ end() const
 object::iterator object::
 find(key_type const key)
 {
-    base::value_type const k {
-                    key.data(), static_cast<rj::SizeType>(key.size()) };
+    base::value_type const k { key.data(), to_rj_size(key.size()) };
 
     return to_iterator(this->base_value().FindMember(k));
 }
@@ -187,8 +183,7 @@ find(key_type const key)
 object::const_iterator object::
 find(key_type const key) const
 {
-    base::value_type const k {
-                    key.data(), static_cast<rj::SizeType>(key.size()) };
+    base::value_type const k { key.data(), to_rj_size(key.size()) };
 
     return to_const_iterator(this->base_value().FindMember(k));
 }
@@ -202,7 +197,7 @@ clear()
 void object::
 reserve(size_type const s)
 {
-    this->base_value().MemberReserve(s, allocator());
+    this->base_value().MemberReserve(to_rj_size(s), allocator());
 }
 
 void object::
@@ -220,8 +215,7 @@ erase(const_iterator const first, const_iterator const last)
 bool object::
 erase(key_type const key)
 {
-    base::value_type const k {
-                    key.data(), static_cast<rj::SizeType>(key.size()) };
+    base::value_type const k { key.data(), to_rj_size(key.size()) };
 
     return this->base_value().EraseMember(k);
 }
