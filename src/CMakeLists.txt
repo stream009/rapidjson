@@ -1,3 +1,7 @@
+add_compile_options(-Wall -Wextra -pedantic -Wconversion -Wsign-conversion)
+
+include_directories(${PROJECT_SOURCE_DIR}/thirdparty/rapidjson/include)
+
 add_library(json STATIC
     internal/allocator.cpp
     base.cpp
@@ -11,10 +15,11 @@ add_library(json STATIC
 )
 target_include_directories(json
     PUBLIC
-        "${PROJECT_SOURCE_DIR}/include"
-    PRIVATE
-        "${THIRD_PARTY_DIR}/rapidjson/include"
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
 )
 set_target_properties(json PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
 )
+
+install(TARGETS json EXPORT JsonTargets)
