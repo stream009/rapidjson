@@ -57,13 +57,13 @@ BOOST_AUTO_TEST_SUITE(constructor)
         o1["foo"] = true;
         o1["bar"] = s;
 
-        auto o1_ptr = o1["bar"].get_string().data();
+        auto o1_ptr = o1["bar"].get_string()->data();
         auto o2 = o1;
 
         BOOST_TEST(o2.size() == 2);
         BOOST_TEST(o2["foo"] == true);
         BOOST_TEST(o2["bar"] == s);
-        BOOST_TEST(o2["bar"].get_string().data() != (void*)o1_ptr);
+        BOOST_TEST(o2["bar"].get_string()->data() != (void*)o1_ptr);
     }
 
     BOOST_AUTO_TEST_CASE(move)
@@ -74,13 +74,13 @@ BOOST_AUTO_TEST_SUITE(constructor)
         o1["foo"] = true;
         o1["bar"] = s;
 
-        auto o1_ptr = o1["bar"].get_string().data();
+        auto o1_ptr = o1["bar"].get_string()->data();
         auto o2 = std::move(o1);
 
         BOOST_TEST(o2.size() == 2);
         BOOST_TEST(o2["foo"] == true);
         BOOST_TEST(o2["bar"] == s);
-        BOOST_TEST(o2["bar"].get_string().data() == (void*)o1_ptr);
+        BOOST_TEST(o2["bar"].get_string()->data() == (void*)o1_ptr);
     }
 
 BOOST_AUTO_TEST_SUITE_END() // constructor
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_SUITE(assignment)
         o1["foo"] = true;
         o1["bar"] = s;
 
-        auto o1_ptr = o1["bar"].get_string().data();
+        auto o1_ptr = o1["bar"].get_string()->data();
 
         json::object o2;
         o2 = o1;
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_SUITE(assignment)
         BOOST_TEST(o2.size() == 2);
         BOOST_TEST(o2["foo"] == true);
         BOOST_TEST(o2["bar"] == s);
-        BOOST_TEST(o2["bar"].get_string().data() != (void*)o1_ptr);
+        BOOST_TEST(o2["bar"].get_string()->data() != (void*)o1_ptr);
     }
 
     BOOST_AUTO_TEST_CASE(move)
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_SUITE(assignment)
         o1["foo"] = true;
         o1["bar"] = s;
 
-        auto o1_ptr = o1["bar"].get_string().data();
+        auto o1_ptr = o1["bar"].get_string()->data();
 
         json::object o2;
         o2 = std::move(o1);
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_SUITE(assignment)
         BOOST_TEST(o2.size() == 2);
         BOOST_TEST(o2["foo"] == true);
         BOOST_TEST(o2["bar"] == s);
-        BOOST_TEST(o2["bar"].get_string().data() == (void*)o1_ptr);
+        BOOST_TEST(o2["bar"].get_string()->data() == (void*)o1_ptr);
     }
 
 BOOST_AUTO_TEST_SUITE_END() // assignment

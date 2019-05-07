@@ -4,6 +4,7 @@
 #include <json/base.hpp>
 
 #include <iosfwd>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -16,7 +17,11 @@ class pointer;
 
 struct null_t {};
 
-extern null_t null;
+inline constexpr null_t null {};
+
+struct undefined_t {};
+
+inline constexpr undefined_t undefined {};
 
 // value
 
@@ -32,7 +37,8 @@ public:
         number,
         string,
         array,
-        object
+        object,
+        undefined
     };
 
 public:
@@ -63,6 +69,7 @@ public:
     value(array const&);
     value(object const&);
     value(null_t);
+    value(undefined_t);
 
     template<typename Bool,
          typename = std::enable_if_t<std::is_same_v<Bool, bool>> >
@@ -83,6 +90,7 @@ public:
     value& operator=(array const&);
     value& operator=(object const&);
     value& operator=(null_t);
+    value& operator=(undefined_t);
 
     // query
     type get_type() const;
@@ -96,19 +104,20 @@ public:
     bool is_array() const;
     bool is_object() const;
     bool is_null() const;
+    bool is_undefined() const;
 
     // accessor
-    bool          get_bool() const;
-    int32_t       get_int32() const;
-    uint32_t      get_uint32() const;
-    int64_t       get_int64() const;
-    uint64_t      get_uint64() const;
-    number_t      get_number() const;
-    string_t      get_string() const;
-    array&        get_array();
-    array const&  get_array() const;
-    object&       get_object();
-    object const& get_object() const;
+    std::optional<bool>      get_bool() const;
+    std::optional<int32_t>   get_int32() const;
+    std::optional<uint32_t>  get_uint32() const;
+    std::optional<int64_t>   get_int64() const;
+    std::optional<uint64_t>  get_uint64() const;
+    std::optional<number_t>  get_number() const;
+    std::optional<string_t>  get_string() const;
+    array*                   get_array();
+    array const*             get_array() const;
+    object*                  get_object();
+    object const*            get_object() const;
 
     // modifier
     void set_bool(bool);
@@ -121,6 +130,7 @@ public:
     void set_array(array const&);
     void set_object(object const&);
     void set_null();
+    void set_undefined();
 
     // pointer
     value const* find(pointer const&) const;
@@ -131,13 +141,12 @@ public:
     void         erase(pointer const&);
     bool         contains(pointer const&) const;
 
+    value const& via(pointer const&) const;
+
     // operator
-    template<typename T,
-             typename = std::enable_if_t<std::is_same_v<T, bool>> >
-    operator T() const
-    {
-        return get_bool();
-    }
+    template<typename Bool,
+             typename = std::enable_if_t<std::is_same_v<Bool, bool>> >
+    operator Bool() const;
 
     bool operator==(value const&) const;
 
@@ -148,10 +157,11 @@ public:
     bool operator==(array const&) const;
     bool operator==(object const&) const;
     bool operator==(null_t) const;
+    bool operator==(undefined_t) const;
 
-    template<typename T,
-             typename = std::enable_if_t<std::is_same_v<T, bool>> >
-    bool operator==(T) const;
+    template<typename Bool,
+             typename = std::enable_if_t<std::is_same_v<Bool, bool>> >
+    bool operator==(Bool) const;
 
     bool operator!=(value const&) const;
 
@@ -162,11 +172,16 @@ public:
     bool operator!=(array const&) const;
     bool operator!=(object const&) const;
     bool operator!=(null_t) const;
+    bool operator!=(undefined_t) const;
 
-    template<typename T,
-             typename = std::enable_if_t<std::is_same_v<T, bool>> >
-    bool operator!=(T) const;
+    template<typename Bool,
+             typename = std::enable_if_t<std::is_same_v<Bool, bool>> >
+    bool operator!=(Bool) const;
 
+private:
+    static value const& undefined();
+
+private:
     friend std::ostream& operator<<(std::ostream&, value const&);
     friend value parse(std::string_view);
     friend value parse(std::istream&);
@@ -263,6 +278,13 @@ operator=(null_t)
     return *this;
 }
 
+inline value& value::
+operator=(undefined_t)
+{
+    set_undefined();
+    return *this;
+}
+
 template<>
 inline value& value::
 operator=<bool, void>(bool const v)
@@ -319,6 +341,12 @@ operator!=(null_t const rhs) const
     return !(*this == rhs);
 }
 
+inline bool value::
+operator!=(undefined_t const rhs) const
+{
+    return !(*this == rhs);
+}
+
 inline bool
 operator==(value::number_t const lhs, value const& rhs)
 {
@@ -357,6 +385,12 @@ operator==(object const& lhs, value const& rhs)
 
 inline bool
 operator==(null_t const lhs, value const& rhs)
+{
+    return rhs == lhs;
+}
+
+inline bool
+operator==(undefined_t const lhs, value const& rhs)
 {
     return rhs == lhs;
 }
@@ -403,8 +437,15 @@ operator!=(null_t const lhs, value const& rhs)
     return rhs != lhs;
 }
 
+inline bool
+operator!=(undefined_t const lhs, value const& rhs)
+{
+    return rhs != lhs;
+}
+
 std::ostream& operator<<(std::ostream&, value::type);
 std::ostream& operator<<(std::ostream&, null_t);
+std::ostream& operator<<(std::ostream&, undefined_t);
 
 } // namespace json
 

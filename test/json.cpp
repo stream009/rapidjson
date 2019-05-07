@@ -17,11 +17,11 @@ BOOST_AUTO_TEST_SUITE(parse_)
 
         auto const v = json::parse(ss);
 
-        BOOST_ASSERT(v.is_object());
-        auto const obj = v.get_object();
+        auto* const obj = v.get_object();
 
-        BOOST_ASSERT(obj.contains("foo"));
-        BOOST_TEST(obj["foo"] == "bar");
+        BOOST_ASSERT(obj);
+        BOOST_ASSERT(obj->contains("foo"));
+        BOOST_TEST((*obj)["foo"] == "bar");
     }
 
 BOOST_AUTO_TEST_SUITE_END() // parse_

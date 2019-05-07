@@ -16,10 +16,10 @@ protected:
     ~base();
 
     base(base const&);
-    base(base&&);
+    base(base&&) noexcept;
 
     base& operator=(base const&);
-    base& operator=(base&&);
+    base& operator=(base&&) noexcept;
 
     base(bool);
     base(int32_t);
@@ -33,10 +33,13 @@ protected:
 
     base(std::string_view);
 
-    void swap(base& b);
+    void swap(base& b) noexcept;
 
     value_type& base_value();
     value_type const& base_value() const;
+
+    bool is_undefined() const;
+    void set_undefined(bool);
 
 private:
     std::aligned_storage_t<16> m_value;

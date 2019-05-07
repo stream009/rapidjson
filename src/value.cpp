@@ -8,6 +8,7 @@
 #include "internal/convert.hpp"
 #include "internal/underlying_value.hpp"
 
+#include <cmath>
 #include <stdexcept>
 
 #include <rapidjson/ostreamwrapper.h>
@@ -26,8 +27,6 @@
 namespace json {
 
 namespace rj = rapidjson;
-
-null_t null;
 
 // value
 
@@ -122,6 +121,14 @@ value(null_t)
     LOG("value(null_t)");
 }
 
+value::
+value(undefined_t)
+    : value {}
+{
+    LOG("value(undefined_t)");
+    base::set_undefined(true);
+}
+
 template<>
 value::
 value<bool, void>(bool const v)
@@ -133,6 +140,10 @@ value<bool, void>(bool const v)
 value::type value::
 get_type() const
 {
+    if (this->is_undefined()) {
+        return type::undefined;
+    }
+
     switch (this->base_value().GetType()) {
         default:
         case rj::kNullType:
@@ -154,176 +165,221 @@ get_type() const
 bool value::
 is_bool() const
 {
-    return this->base_value().IsBool();
+    return !this->is_undefined() && this->base_value().IsBool();
 }
 
 bool value::
 is_int32() const
 {
-    return this->base_value().IsInt();
+    return !this->is_undefined() && this->base_value().IsInt();
 }
 
 bool value::
 is_uint32() const
 {
-    return this->base_value().IsUint();
+    return !this->is_undefined() && this->base_value().IsUint();
 }
 
 bool value::
 is_int64() const
 {
-    return this->base_value().IsInt64();
+    return !this->is_undefined() && this->base_value().IsInt64();
 }
 
 bool value::
 is_uint64() const
 {
-    return this->base_value().IsUint64();
+    return !this->is_undefined() && this->base_value().IsUint64();
 }
 
 bool value::
 is_number() const
 {
-    return this->base_value().IsNumber();
+    return !this->is_undefined() && this->base_value().IsNumber();
 }
 
 bool value::
 is_string() const
 {
-    return this->base_value().IsString();
+    return !this->is_undefined() && this->base_value().IsString();
 }
 
 bool value::
 is_array() const
 {
-    return this->base_value().IsArray();
+    return !this->is_undefined() && this->base_value().IsArray();
 }
 
 bool value::
 is_object() const
 {
-    return this->base_value().IsObject();
+    return !this->is_undefined() && this->base_value().IsObject();
 }
 
 bool value::
 is_null() const
 {
-    return this->base_value().IsNull();
+    return !this->is_undefined() && this->base_value().IsNull();
 }
 
 bool value::
+is_undefined() const
+{
+    return base::is_undefined();
+}
+
+std::optional<bool> value::
 get_bool() const
 {
-    assert(is_bool());
+    if (this->is_undefined() || !is_bool()) {
+        return std::nullopt;
+    }
+
     return this->base_value().GetBool();
 }
 
-int32_t value::
+std::optional<int32_t> value::
 get_int32() const
 {
-    assert(is_int32());
+    if (this->is_undefined() || !is_int32()) {
+        return std::nullopt;
+    }
+
     return this->base_value().GetInt();
 }
 
-uint32_t value::
+std::optional<uint32_t> value::
 get_uint32() const
 {
-    assert(is_uint32());
+    if (this->is_undefined() || !is_uint32()) {
+        return std::nullopt;
+    }
+
     return this->base_value().GetUint();
 }
 
-int64_t value::
+std::optional<int64_t> value::
 get_int64() const
 {
-    assert(is_int64());
+    if (this->is_undefined() || !is_int64()) {
+        return std::nullopt;
+    }
+
     return this->base_value().GetInt64();
 }
 
-uint64_t value::
+std::optional<uint64_t> value::
 get_uint64() const
 {
-    assert(is_uint64());
+    if (this->is_undefined() || !is_uint64()) {
+        return std::nullopt;
+    }
+
     return this->base_value().GetUint64();
 }
 
-value::number_t value::
+std::optional<value::number_t> value::
 get_number() const
 {
-    assert(is_number());
+    if (this->is_undefined() || !is_number()) {
+        return std::nullopt;
+    }
+
     return this->base_value().GetDouble();
 }
 
-value::string_t value::
+std::optional<value::string_t> value::
 get_string() const
 {
-    assert(is_string());
+    if (this->is_undefined() || !is_string()) {
+        return std::nullopt;
+    }
+
     auto& base = this->base_value();
 
-    return { base.GetString(), base.GetStringLength() };
+    return string_t { base.GetString(), base.GetStringLength() };
 }
 
-array& value::
+array* value::
 get_array()
 {
-    assert(is_array());
-    return reinterpret_cast<array&>(*this);
+    if (this->is_undefined() || !is_array()) {
+        return nullptr;
+    }
+
+    return reinterpret_cast<array*>(this);
 }
 
-array const& value::
+array const* value::
 get_array() const
 {
-    assert(is_array());
-    return reinterpret_cast<array const&>(*this);
+    if (this->is_undefined() || !is_array()) {
+        return nullptr;
+    }
+
+    return reinterpret_cast<array const*>(this);
 }
 
-object& value::
+object* value::
 get_object()
 {
-    assert(is_object());
-    return reinterpret_cast<object&>(*this);
+    if (this->is_undefined() || !is_object()) {
+        return nullptr;
+    }
+
+    return reinterpret_cast<object*>(this);
 }
 
-object const& value::
+object const* value::
 get_object() const
 {
-    assert(is_object());
-    return reinterpret_cast<object const&>(*this);
+    if (this->is_undefined() || !is_object()) {
+        return nullptr;
+    }
+
+    return reinterpret_cast<object const*>(this);
 }
 
 void value::
 set_bool(bool const v)
 {
     this->base_value().SetBool(v);
+    base::set_undefined(false);
 }
 
 void value::
 set_int32(int32_t const i)
 {
     this->base_value().SetInt(i);
+    base::set_undefined(false);
 }
 
 void value::
 set_int64(int64_t const i)
 {
     this->base_value().SetInt64(i);
+    base::set_undefined(false);
 }
 
 void value::
 set_uint32(uint32_t const i)
 {
     this->base_value().SetUint(i);
+    base::set_undefined(false);
 }
 
 void value::
 set_uint64(uint64_t const i)
 {
     this->base_value().SetUint64(i);
+    base::set_undefined(false);
 }
 
 void value::
 set_number(number_t const v)
 {
     this->base_value().SetDouble(v);
+    base::set_undefined(false);
 }
 
 void value::
@@ -334,6 +390,7 @@ set_string(string_t const v)
         to_rj_size(v.size()),
         allocator()
     );
+    base::set_undefined(false);
 }
 
 void value::
@@ -341,6 +398,7 @@ set_array(array const& a)
 {
     value v { a };
     *this = v;
+    base::set_undefined(false);
 }
 
 void value::
@@ -348,12 +406,38 @@ set_object(object const& o)
 {
     value v { o };
     *this = v;
+    base::set_undefined(false);
 }
 
 void value::
 set_null()
 {
     this->base_value().SetNull();
+    base::set_undefined(false);
+}
+
+void value::
+set_undefined()
+{
+    this->base_value().SetNull();
+    base::set_undefined(true);
+}
+
+value const& value::
+via(pointer const& p) const
+{
+    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
+
+    auto* const v = reinterpret_cast<value const*>(
+        base.Get(reinterpret_cast<rj::Value const&>(*this))
+    );
+
+    if (v) {
+        return *v;
+    }
+    else {
+        return undefined();
+    }
 }
 
 value const* value::
@@ -416,6 +500,27 @@ contains(pointer const& p) const
     return find(p) != nullptr;
 }
 
+template<>
+value::
+operator bool() const
+{
+    if (is_undefined()) return false;
+    if (is_bool()) {
+        return *get_bool();
+    }
+    if (is_number()) {
+        auto const n = *get_number();
+        return n != 0 && !std::isnan(n);
+    }
+    if (is_string()) {
+        return !get_string()->empty();
+    }
+    if (is_array() || is_object()) {
+        return true;
+    }
+    return false;
+}
+
 bool value::
 operator==(value const& rhs) const
 {
@@ -475,12 +580,26 @@ operator==(null_t) const
     return this->is_null();
 }
 
+bool value::
+operator==(undefined_t) const
+{
+    LOG("operator==(undefined_t)");
+    return this->is_undefined();
+}
+
 template<>
 bool value::
 operator==<bool, void>(bool const rhs) const
 {
     LOG("operator==(bool)");
     return this->base_value() == rhs;
+}
+
+value const& value::
+undefined()
+{
+    static value const v { json::undefined };
+    return v;
 }
 
 std::ostream&
@@ -530,6 +649,13 @@ std::ostream&
 operator<<(std::ostream& os, null_t)
 {
     os << "null";
+    return os;
+}
+
+std::ostream&
+operator<<(std::ostream& os, undefined_t)
+{
+    os << "undefined";
     return os;
 }
 

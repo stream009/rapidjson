@@ -10,6 +10,32 @@ namespace json {
 
 namespace rj = rapidjson;
 
+struct Flag {
+#if RAPIDJSON_48BITPOINTER_OPTIMIZATION
+    char payload[sizeof(rj::SizeType) * 2 + 6];     // 2 x SizeType + lower 48-bit pointer
+#elif RAPIDJSON_64BIT
+    char payload[sizeof(rj::SizeType) * 2 + sizeof(void*) + 6]; // 6 padding bytes
+#else
+    char payload[sizeof(rj::SizeType) * 2 + sizeof(void*) + 2]; // 2 padding bytes
+#endif
+    uint16_t flags;
+};
+
+static uint16_t
+get_flag(rj::Value const& v)
+{
+    return reinterpret_cast<Flag const&>(v).flags;
+}
+
+static uint16_t&
+get_flag(rj::Value& v)
+{
+    return reinterpret_cast<Flag&>(v).flags;
+}
+
+//
+// base
+//
 base::
 base()
 {
@@ -29,7 +55,7 @@ base(base const& other)
 }
 
 base::
-base(base&& other)
+base(base&& other) noexcept
 {
     new (&m_value) value_type;
     swap(other);
@@ -46,7 +72,7 @@ operator=(base const& rhs)
 }
 
 base& base::
-operator=(base&& rhs)
+operator=(base&& rhs) noexcept
 {
     base tmp { std::move(rhs) };
 
@@ -110,7 +136,7 @@ base(std::string_view const v)
 }
 
 void base::
-swap(base& other)
+swap(base& other) noexcept
 {
     base_value().Swap(other.base_value());
 }
@@ -127,5 +153,21 @@ base_value() const
     return reinterpret_cast<value_type const&>(m_value);
 }
 
+bool base::
+is_undefined() const
+{
+    return get_flag(base_value()) & 0x8000;
+}
+
+void base::
+set_undefined(bool const undefined)
+{
+    if (undefined) {
+        get_flag(base_value()) |= static_cast<uint16_t>(0x8000);
+    }
+    else {
+        get_flag(base_value()) &= static_cast<uint16_t>(~0x8000);
+    }
+}
 
 } // namespace json

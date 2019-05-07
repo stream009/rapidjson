@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_SUITE(iterator)
 
         double sum = 0;
         for (auto& v: a) {
-            sum += v.get_number();
+            sum += *v.get_number();
         }
         BOOST_TEST(sum == 45);
     }
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_SUITE(modifier)
 
         BOOST_REQUIRE(a.size() == 1);
         BOOST_TEST(a[0] == s);
-        BOOST_TEST(a[0].get_string().data() != static_cast<void const*>(s));
+        BOOST_TEST(a[0].get_string()->data() != static_cast<void const*>(s));
     }
 
     BOOST_AUTO_TEST_CASE(push_back_move)
@@ -230,13 +230,13 @@ BOOST_AUTO_TEST_SUITE(modifier)
         json::array a;
         json::value v = s;
 
-        auto vptr = v.get_string().data();
+        auto vptr = v.get_string()->data();
 
         a.push_back(std::move(v));
 
         BOOST_REQUIRE(a.size() == 1);
         BOOST_TEST(a[0] == s);
-        BOOST_TEST((void*)(a[0].get_string().data()) == (void*)(vptr));
+        BOOST_TEST((void*)(a[0].get_string()->data()) == (void*)(vptr));
     }
 
     BOOST_AUTO_TEST_CASE(erase_one)

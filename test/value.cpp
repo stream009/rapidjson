@@ -240,8 +240,9 @@ BOOST_AUTO_TEST_SUITE(constructor)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s);
-        BOOST_TEST(sv.size() == strlen(s));
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s);
+        BOOST_TEST(sv->size() == strlen(s));
 
         // conversion
         json::value v2 = s;
@@ -257,8 +258,9 @@ BOOST_AUTO_TEST_SUITE(constructor)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s);
-        BOOST_TEST(sv.size() == strlen(s));
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s);
+        BOOST_TEST(sv->size() == strlen(s));
 
         // conversion
         json::value v2 = s;
@@ -274,8 +276,9 @@ BOOST_AUTO_TEST_SUITE(constructor)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s.data());
-        BOOST_TEST(sv.size() == s.size());
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s.data());
+        BOOST_TEST(sv->size() == s.size());
 
         // conversion
         json::value v2 = s;
@@ -291,8 +294,9 @@ BOOST_AUTO_TEST_SUITE(constructor)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s.data());
-        BOOST_TEST(sv.size() == s.size());
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s.data());
+        BOOST_TEST(sv->size() == s.size());
 
         // conversion
         json::value v2 = s;
@@ -535,8 +539,9 @@ BOOST_AUTO_TEST_SUITE(assignment)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s);
-        BOOST_TEST(sv.size() == strlen(s));
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s);
+        BOOST_TEST(sv->size() == strlen(s));
     }
 
     BOOST_AUTO_TEST_CASE(char_ptr)
@@ -550,8 +555,9 @@ BOOST_AUTO_TEST_SUITE(assignment)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s);
-        BOOST_TEST(sv.size() == strlen(s));
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s);
+        BOOST_TEST(sv->size() == strlen(s));
     }
 
     BOOST_AUTO_TEST_CASE(string)
@@ -565,8 +571,9 @@ BOOST_AUTO_TEST_SUITE(assignment)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s.data());
-        BOOST_TEST(sv.size() == s.size());
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s.data());
+        BOOST_TEST(sv->size() == s.size());
     }
 
     BOOST_AUTO_TEST_CASE(string_view)
@@ -580,8 +587,9 @@ BOOST_AUTO_TEST_SUITE(assignment)
 
         // check if string is copied
         auto const sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s.data());
-        BOOST_TEST(sv.size() == s.size());
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s.data());
+        BOOST_TEST(sv->size() == s.size());
     }
 
     BOOST_AUTO_TEST_CASE(array)
@@ -646,6 +654,9 @@ BOOST_AUTO_TEST_SUITE(query)
         json::object o;
         v = o;
         BOOST_TEST(v.get_type() == value::type::object);
+
+        v = undefined;
+        BOOST_TEST(v.get_type() == value::type::undefined);
     }
 
     BOOST_AUTO_TEST_CASE(is_null)
@@ -763,55 +774,70 @@ BOOST_AUTO_TEST_SUITE(query)
     {
         json::value v { true };
 
-        bool b = v.get_bool();
+        auto const b = v.get_bool();
 
-        BOOST_TEST(b == true);
+        BOOST_ASSERT(b);
+        BOOST_TEST(*b == true);
     }
 
     BOOST_AUTO_TEST_CASE(get_int32)
     {
         json::value v = 1;
 
-        BOOST_TEST(v.get_int32() == 1);
+        auto const i = v.get_int32();
+
+        BOOST_ASSERT(i);
+        BOOST_TEST(*i == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_uint32)
     {
         json::value v = 1u;
 
-        BOOST_TEST(v.get_uint32() == 1);
+        auto const i = v.get_uint32();
+
+        BOOST_ASSERT(i);
+        BOOST_TEST(*i == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_int64)
     {
         json::value v = 1ll;
 
-        BOOST_TEST(v.get_int64() == 1);
+        auto const i = v.get_int64();
+
+        BOOST_ASSERT(i);
+        BOOST_TEST(*i == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_uint64)
     {
         json::value v = 1ull;
 
-        BOOST_TEST(v.get_uint64() == 1);
+        auto const i = v.get_uint64();
+
+        BOOST_ASSERT(i);
+        BOOST_TEST(*i == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_number)
     {
         json::value v = 1;
 
-        auto b = v.get_number();
+        auto const n = v.get_number();
 
-        BOOST_TEST(b == 1);
+        BOOST_ASSERT(n);
+        BOOST_TEST(*n == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_string)
     {
         json::value v { "string" };
 
-        auto s = v.get_string();
+        auto const s = v.get_string();
 
-        BOOST_TEST(s == "string");
+        BOOST_ASSERT(s);
+        BOOST_TEST(*s == "string");
     }
 
     BOOST_AUTO_TEST_CASE(get_array)
@@ -821,10 +847,11 @@ BOOST_AUTO_TEST_SUITE(query)
 
         json::value v { a1 };
 
-        auto& a2 = v.get_array();
+        auto const a2 = v.get_array();
 
-        BOOST_REQUIRE(a2.size() == 1);
-        BOOST_TEST(a2[0] == 1);
+        BOOST_ASSERT(a2);
+        BOOST_REQUIRE(a2->size() == 1);
+        BOOST_TEST((*a2)[0] == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_array_const)
@@ -835,10 +862,11 @@ BOOST_AUTO_TEST_SUITE(query)
         json::value v { a1 };
         auto const& vc = v;
 
-        auto& a2 = vc.get_array();
+        auto const a2 = vc.get_array();
 
-        BOOST_REQUIRE(a2.size() == 1);
-        BOOST_TEST(a2[0] == 1);
+        BOOST_ASSERT(a2);
+        BOOST_REQUIRE(a2->size() == 1);
+        BOOST_TEST((*a2)[0] == 1);
     }
 
     BOOST_AUTO_TEST_CASE(get_object)
@@ -848,10 +876,11 @@ BOOST_AUTO_TEST_SUITE(query)
 
         json::value v { o1 };
 
-        auto& o2 = v.get_object();
+        auto const o2 = v.get_object();
 
-        BOOST_REQUIRE(o2.size() == 1);
-        BOOST_TEST(o2["foo"] == true);
+        BOOST_ASSERT(o2);
+        BOOST_REQUIRE(o2->size() == 1);
+        BOOST_TEST((*o2)["foo"] == true);
     }
 
     BOOST_AUTO_TEST_CASE(get_object_const)
@@ -862,10 +891,11 @@ BOOST_AUTO_TEST_SUITE(query)
         json::value v { o1 };
 
         auto const& vc = v;
-        auto& o2 = vc.get_object();
+        auto const o2 = vc.get_object();
 
-        BOOST_REQUIRE(o2.size() == 1);
-        BOOST_TEST(o2.at("foo") == true);
+        BOOST_ASSERT(o2);
+        BOOST_REQUIRE(o2->size() == 1);
+        BOOST_TEST(o2->at("foo") == true);
     }
 
 BOOST_AUTO_TEST_SUITE_END() // query
@@ -932,9 +962,10 @@ BOOST_AUTO_TEST_SUITE(modifier)
         v.set_string(s);
         BOOST_TEST(v == s);
 
-        auto sv = v.get_string();
-        BOOST_TEST((void*)sv.data() != s);
-        BOOST_TEST(sv.size() == strlen(s));
+        auto const sv = v.get_string();
+        BOOST_ASSERT(sv);
+        BOOST_TEST((void*)sv->data() != s);
+        BOOST_TEST(sv->size() == strlen(s));
     }
 
     BOOST_AUTO_TEST_CASE(set_array)
@@ -947,10 +978,11 @@ BOOST_AUTO_TEST_SUITE(modifier)
 
         BOOST_TEST(v.is_array());
 
-        auto const& a2 = v.get_array();
+        auto const a2 = v.get_array();
 
-        BOOST_TEST(a2.size() == 1);
-        BOOST_TEST(a2.front() == 1);
+        BOOST_ASSERT(a2);
+        BOOST_TEST(a2->size() == 1);
+        BOOST_TEST(a2->front() == 1);
     }
 
     BOOST_AUTO_TEST_CASE(set_object)
@@ -963,10 +995,11 @@ BOOST_AUTO_TEST_SUITE(modifier)
 
         BOOST_TEST(v.is_object());
 
-        auto const& o2 = v.get_object();
+        auto const o2 = v.get_object();
 
-        BOOST_TEST(o2.size() == 1);
-        BOOST_TEST(o2.at("foo") == 10);
+        BOOST_ASSERT(o2);
+        BOOST_TEST(o2->size() == 1);
+        BOOST_TEST(o2->at("foo") == 10);
     }
 
     BOOST_AUTO_TEST_CASE(set_null)
@@ -981,13 +1014,61 @@ BOOST_AUTO_TEST_SUITE_END() // modifier
 
 BOOST_AUTO_TEST_SUITE(conversion_op)
 
+    BOOST_AUTO_TEST_CASE(undefined_)
+    {
+        json::value v = json::undefined;
+
+        BOOST_TEST(!v);
+    }
+
+    BOOST_AUTO_TEST_CASE(null_)
+    {
+        json::value v;
+        BOOST_TEST(v.is_null());
+        BOOST_TEST(!v);;
+    }
+
     BOOST_AUTO_TEST_CASE(bool_)
     {
         json::value v { true };
+        BOOST_TEST(!!v);
 
-        bool b = v;
+        v = false;
+        BOOST_TEST(!v);
+    }
 
-        BOOST_TEST(b == true);
+    BOOST_AUTO_TEST_CASE(number_)
+    {
+        json::value v = 1;
+        BOOST_TEST(!!v == true);
+
+        v = 0;
+        BOOST_TEST(!v);
+    }
+
+    BOOST_AUTO_TEST_CASE(string_)
+    {
+        json::value v = "foo";
+        BOOST_TEST(!!v);
+
+        v = "";
+        BOOST_TEST(!v);
+    }
+
+    BOOST_AUTO_TEST_CASE(array_)
+    {
+        json::array a;
+        json::value v = a;
+
+        BOOST_TEST(!!v);
+    }
+
+    BOOST_AUTO_TEST_CASE(object_)
+    {
+        json::object o;
+        json::value v = o;
+
+        BOOST_TEST(!!v);
     }
 
 BOOST_AUTO_TEST_SUITE_END() // conversion_op

@@ -94,6 +94,37 @@ BOOST_AUTO_TEST_SUITE(find_)
 
 BOOST_AUTO_TEST_SUITE_END() // find_
 
+BOOST_AUTO_TEST_SUITE(via_)
+
+    BOOST_AUTO_TEST_CASE(defined_)
+    {
+        json::pointer p { "/foo/bar" };
+        auto const v1 = json::parse(R"({
+            "foo": {
+                "bar": 1
+            }
+        })");
+
+        auto const& v2 = v1.via("/foo/bar");
+        BOOST_TEST(!v2.is_undefined());
+        BOOST_TEST(v2 == 1);
+    }
+
+    BOOST_AUTO_TEST_CASE(undefined_)
+    {
+        json::pointer p { "/foo/bar" };
+        auto const v1 = json::parse(R"({
+            "foo": {
+                "bar": 1
+            }
+        })");
+
+        auto const& v2 = v1.via("/foo/baz");
+        BOOST_TEST(v2.is_undefined());
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // via_
+
 BOOST_AUTO_TEST_SUITE(at_)
 
     BOOST_AUTO_TEST_CASE(const_)
