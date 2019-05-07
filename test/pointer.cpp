@@ -4,8 +4,6 @@
 #include <json/pointer.hpp>
 #include <json/error.hpp>
 
-#include <iostream> //TODO
-
 namespace json::testing {
 
 BOOST_AUTO_TEST_SUITE(pointer_)
@@ -62,40 +60,6 @@ BOOST_AUTO_TEST_SUITE_END() // constructor_
 
 BOOST_AUTO_TEST_SUITE(find_)
 
-    BOOST_AUTO_TEST_CASE(const_)
-    {
-        json::pointer p { "/foo/bar" };
-        auto const v1 = json::parse(R"({
-            "foo": {
-                "bar": 1
-            }
-        })");
-
-        auto* const v2 = v1.find(p);
-        BOOST_ASSERT(v2 != nullptr);
-
-        BOOST_TEST(*v2 == 1);
-    }
-
-    BOOST_AUTO_TEST_CASE(non_const_)
-    {
-        json::pointer p { "/foo/bar" };
-        auto v1 = json::parse(R"({
-            "foo": {
-                "bar": 1
-            }
-        })");
-
-        auto* const v2 = v1.find(p);
-        BOOST_ASSERT(v2 != nullptr);
-
-        BOOST_TEST(*v2 == 1);
-    }
-
-BOOST_AUTO_TEST_SUITE_END() // find_
-
-BOOST_AUTO_TEST_SUITE(via_)
-
     BOOST_AUTO_TEST_CASE(defined_)
     {
         json::pointer p { "/foo/bar" };
@@ -105,7 +69,7 @@ BOOST_AUTO_TEST_SUITE(via_)
             }
         })");
 
-        auto const& v2 = v1.via("/foo/bar");
+        auto const& v2 = v1.find("/foo/bar");
         BOOST_TEST(!v2.is_undefined());
         BOOST_TEST(v2 == 1);
     }
@@ -119,29 +83,15 @@ BOOST_AUTO_TEST_SUITE(via_)
             }
         })");
 
-        auto const& v2 = v1.via("/foo/baz");
-        BOOST_TEST(v2.is_undefined());
+        auto const& v2 = v1.find("/foo/baz");
+        BOOST_TEST(v2 == json::undefined);
     }
 
-BOOST_AUTO_TEST_SUITE_END() // via_
+BOOST_AUTO_TEST_SUITE_END() // find_
 
-BOOST_AUTO_TEST_SUITE(at_)
+BOOST_AUTO_TEST_SUITE(emplace_)
 
-    BOOST_AUTO_TEST_CASE(const_)
-    {
-        auto const v1 = json::parse(R"({
-            "foo": {
-                "bar": 1
-            }
-        })");
-
-        json::pointer p { "/foo/bar" };
-
-        auto const& v2 = v1.at(p);
-        BOOST_TEST(v2 == 1);
-    }
-
-    BOOST_AUTO_TEST_CASE(non_const_)
+    BOOST_AUTO_TEST_CASE(path_exists_)
     {
         auto v1 = json::parse(R"({
             "foo": {
@@ -151,23 +101,25 @@ BOOST_AUTO_TEST_SUITE(at_)
 
         json::pointer p { "/foo/bar" };
 
-        auto const& v2 = v1.at(p);
-        BOOST_TEST(v2 == 1);
+        BOOST_TEST(v1.emplace(p) == 1);
     }
 
-    BOOST_AUTO_TEST_CASE(out_of_range_)
+    BOOST_AUTO_TEST_CASE(path_doesnt_exists_)
     {
-        auto const v1 = json::parse(R"({
+        auto v1 = json::parse(R"({
             "foo": {
                 "bar": 1
             }
         })");
 
-        std::string const p = "/foo/baz";
-        BOOST_CHECK_THROW(v1.at(p), std::out_of_range);
+        BOOST_TEST(v1.emplace("/foo/baz") == json::null);
+
+        auto const p = "/xyzzy";
+        v1.emplace(p) = 2;
+        BOOST_TEST(v1.find(p) == 2);
     }
 
-BOOST_AUTO_TEST_SUITE_END() // at_
+BOOST_AUTO_TEST_SUITE_END() // emplace_
 
 BOOST_AUTO_TEST_SUITE(subscript_)
 
@@ -196,7 +148,7 @@ BOOST_AUTO_TEST_SUITE(subscript_)
 
         auto const p = "/xyzzy";
         v1[p] = 2;
-        BOOST_TEST(v1.at(p) == 2);
+        BOOST_TEST(v1.find(p) == 2);
     }
 
 BOOST_AUTO_TEST_SUITE_END() // operator[]_
@@ -214,7 +166,7 @@ BOOST_AUTO_TEST_SUITE(erase_)
         json::pointer const p { "/foo/bar" };
 
         v1.erase(p);
-        BOOST_TEST(v1.find(p) == nullptr);
+        BOOST_TEST(v1.find(p) == json::undefined);
     }
 
     BOOST_AUTO_TEST_CASE(path_doesnt_exists_)

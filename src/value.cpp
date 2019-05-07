@@ -424,7 +424,7 @@ set_undefined()
 }
 
 value const& value::
-via(pointer const& p) const
+find(pointer const& p) const
 {
     auto const& base = reinterpret_cast<rj::Pointer const&>(p);
 
@@ -440,51 +440,26 @@ via(pointer const& p) const
     }
 }
 
-value const* value::
-find(pointer const& p) const
-{
-    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
-
-    return reinterpret_cast<value const*>(
-        base.Get(reinterpret_cast<rj::Value const&>(*this))
-    );
-}
-
-value* value::
-find(pointer const& p)
-{
-    return const_cast<value*>(
-        const_cast<value const*>(this)->find(p)
-    );
-}
-
-value const& value::
-at(pointer const& p) const
-{
-    auto* const v = find(p);
-    if (v == nullptr) {
-        throw std::out_of_range("json::value::at");
-    }
-
-    return *v;
-}
-
 value& value::
-at(pointer const& p)
-{
-    return const_cast<value&>(
-        const_cast<value const*>(this)->at(p)
-    );
-}
-
-value& value::
-operator[](pointer const& p)
+emplace(pointer const& p)
 {
     auto const& base = reinterpret_cast<rj::Pointer const&>(p);
 
     return reinterpret_cast<value&>(
         base.Create(reinterpret_cast<rj::Value&>(*this), allocator())
     );
+}
+
+value& value::
+operator[](pointer const& p)
+{
+    return emplace(p);
+}
+
+value const& value::
+operator[](pointer const& p) const
+{
+    return find(p);
 }
 
 void value::
@@ -497,7 +472,7 @@ erase(pointer const& p)
 bool value::
 contains(pointer const& p) const
 {
-    return find(p) != nullptr;
+    return !find(p).is_undefined();
 }
 
 template<>
