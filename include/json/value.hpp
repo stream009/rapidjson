@@ -69,7 +69,6 @@ public:
     value(array const&);
     value(object const&);
     value(null_t);
-    value(undefined_t);
 
     template<typename Bool,
          typename = std::enable_if_t<std::is_same_v<Bool, bool>> >
@@ -90,7 +89,6 @@ public:
     value& operator=(array const&);
     value& operator=(object const&);
     value& operator=(null_t);
-    value& operator=(undefined_t);
 
     // query
     type get_type() const;
@@ -130,7 +128,6 @@ public:
     void set_array(array const&);
     void set_object(object const&);
     void set_null();
-    void set_undefined();
 
     // pointer
     value const& find(pointer const&) const;
@@ -176,6 +173,8 @@ public:
     bool operator!=(Bool) const;
 
 private:
+    value(undefined_t);
+
     static value const& undefined();
 
 private:
@@ -272,13 +271,6 @@ inline value& value::
 operator=(null_t)
 {
     set_null();
-    return *this;
-}
-
-inline value& value::
-operator=(undefined_t)
-{
-    set_undefined();
     return *this;
 }
 

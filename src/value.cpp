@@ -416,13 +416,6 @@ set_null()
     base::set_undefined(false);
 }
 
-void value::
-set_undefined()
-{
-    this->base_value().SetNull();
-    base::set_undefined(true);
-}
-
 value const& value::
 find(pointer const& p) const
 {

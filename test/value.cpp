@@ -3,6 +3,7 @@
 #include <json/value.hpp>
 #include <json/array.hpp>
 #include <json/object.hpp>
+#include <json/pointer.hpp>
 
 namespace json::testing {
 
@@ -655,8 +656,7 @@ BOOST_AUTO_TEST_SUITE(query)
         v = o;
         BOOST_TEST(v.get_type() == value::type::object);
 
-        v = undefined;
-        BOOST_TEST(v.get_type() == value::type::undefined);
+        BOOST_TEST(v.find("/foo").get_type() == value::type::undefined);
     }
 
     BOOST_AUTO_TEST_CASE(is_null)
@@ -1016,9 +1016,9 @@ BOOST_AUTO_TEST_SUITE(conversion_op)
 
     BOOST_AUTO_TEST_CASE(undefined_)
     {
-        json::value v = json::undefined;
+        json::value v;
 
-        BOOST_TEST(!v);
+        BOOST_TEST(!v.find("/foo"));
     }
 
     BOOST_AUTO_TEST_CASE(null_)
