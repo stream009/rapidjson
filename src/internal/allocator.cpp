@@ -2,10 +2,10 @@
 
 namespace json {
 
-rapidjson::MemoryPoolAllocator<>&
+rapidjson::CrtAllocator&
 allocator()
 {
-    static thread_local rapidjson::MemoryPoolAllocator alloc;
+    static thread_local rapidjson::CrtAllocator alloc;
     return alloc;
 }
 

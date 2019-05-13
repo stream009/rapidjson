@@ -31,7 +31,7 @@ public:
         : pointer { std::string_view { v } } {}
 
     // iterator
-    //const_iterator begin() const;
+    //const_iterator begin() const; //TODO
     //const_iterator end() const;
 
     // conversion

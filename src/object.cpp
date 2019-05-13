@@ -11,9 +11,9 @@ namespace rj = rapidjson;
 
 // types
 
-using member_base = rj::Value::Member;
-using iterator_base = rj::Value::MemberIterator;
-using const_iterator_base = rj::Value::ConstMemberIterator;
+using member_base = base::value_type::Member;
+using iterator_base = base::value_type::MemberIterator;
+using const_iterator_base = base::value_type::ConstMemberIterator;
 
 // utility
 

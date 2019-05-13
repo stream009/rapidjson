@@ -144,15 +144,15 @@ void array::
 erase(const_iterator const it)
 {
     this->base_value().Erase(
-                        reinterpret_cast<rj::Value::ConstValueIterator>(it));
+                reinterpret_cast<base::value_type::ConstValueIterator>(it));
 }
 
 void array::
 erase(const_iterator const first, const_iterator const last)
 {
     this->base_value().Erase(
-                reinterpret_cast<rj::Value::ConstValueIterator>(first),
-                reinterpret_cast<rj::Value::ConstValueIterator>(last));
+                reinterpret_cast<base::value_type::ConstValueIterator>(first),
+                reinterpret_cast<base::value_type::ConstValueIterator>(last));
 }
 
 std::ostream&

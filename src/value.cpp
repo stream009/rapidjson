@@ -419,10 +419,10 @@ set_null()
 value const& value::
 find(pointer const& p) const
 {
-    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
+    auto const& base = reinterpret_cast<base_pointer_t const&>(p);
 
     auto* const v = reinterpret_cast<value const*>(
-        base.Get(reinterpret_cast<rj::Value const&>(*this))
+        base.Get(reinterpret_cast<base::value_type const&>(*this))
     );
 
     if (v) {
@@ -436,10 +436,10 @@ find(pointer const& p) const
 value& value::
 emplace(pointer const& p)
 {
-    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
+    auto const& base = reinterpret_cast<base_pointer_t const&>(p);
 
     return reinterpret_cast<value&>(
-        base.Create(reinterpret_cast<rj::Value&>(*this), allocator())
+        base.Create(reinterpret_cast<base::value_type&>(*this), allocator())
     );
 }
 
@@ -458,8 +458,8 @@ operator[](pointer const& p) const
 void value::
 erase(pointer const& p)
 {
-    auto const& base = reinterpret_cast<rj::Pointer const&>(p);
-    base.Erase(reinterpret_cast<rj::Value&>(*this));
+    auto const& base = reinterpret_cast<base_pointer_t const&>(p);
+    base.Erase(reinterpret_cast<base::value_type&>(*this));
 }
 
 bool value::

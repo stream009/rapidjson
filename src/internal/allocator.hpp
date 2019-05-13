@@ -5,8 +5,7 @@
 
 namespace json {
 
-// thread-local allocator
-rapidjson::MemoryPoolAllocator<>& allocator();
+rapidjson::CrtAllocator& allocator();
 
 } // namespace json
 

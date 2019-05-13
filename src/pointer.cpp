@@ -2,6 +2,8 @@
 
 #include <json/error.hpp>
 
+#include "internal/underlying_value.hpp"
+
 #include <rapidjson/pointer.h>
 #include <rapidjson/stringbuffer.h>
 
@@ -9,18 +11,16 @@ namespace json {
 
 namespace rj = rapidjson;
 
-using base_type = rj::Pointer;
-
-static base_type&
+static base_pointer_t&
 to_base(pointer& p)
 {
-    return reinterpret_cast<base_type&>(p);
+    return reinterpret_cast<base_pointer_t&>(p);
 }
 
-static base_type const&
+static base_pointer_t const&
 to_base(pointer const& p)
 {
-    return reinterpret_cast<base_type const&>(p);
+    return reinterpret_cast<base_pointer_t const&>(p);
 }
 
 //
@@ -29,14 +29,14 @@ to_base(pointer const& p)
 pointer::
 pointer()
 {
-    static_assert(sizeof(m_impl) >= sizeof(base_type));
-    new (&m_impl) base_type;
+    static_assert(sizeof(m_impl) >= sizeof(base_pointer_t));
+    new (&m_impl) base_pointer_t;
 }
 
 pointer::
 pointer(std::string_view const s)
 {
-    new (&m_impl) base_type { s.data(), s.size() };
+    new (&m_impl) base_pointer_t { s.data(), s.size() };
 
     auto const& base = to_base(*this);
     if (!base.IsValid()) {
@@ -49,13 +49,13 @@ pointer(std::string_view const s)
 pointer::
 pointer(pointer const& other)
 {
-    new (&m_impl) base_type { to_base(other) };
+    new (&m_impl) base_pointer_t { to_base(other) };
 }
 
 pointer::
 pointer(pointer&& other) noexcept
 {
-    new (&m_impl) base_type;
+    new (&m_impl) base_pointer_t;
     swap(other);
 }
 
@@ -79,7 +79,7 @@ operator=(pointer&& rhs) noexcept
 pointer::
 ~pointer() noexcept
 {
-    to_base(*this).~base_type();
+    to_base(*this).~base_pointer_t();
 }
 
 std::string pointer::

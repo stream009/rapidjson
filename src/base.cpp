@@ -22,13 +22,13 @@ struct Flag {
 };
 
 static uint16_t
-get_flag(rj::Value const& v)
+get_flag(base::value_type const& v)
 {
     return reinterpret_cast<Flag const&>(v).flags;
 }
 
 static uint16_t&
-get_flag(rj::Value& v)
+get_flag(base::value_type& v)
 {
     return reinterpret_cast<Flag&>(v).flags;
 }

@@ -20,7 +20,7 @@ namespace rj = rapidjson;
 value
 parse(std::string_view const str)
 {
-    rj::Document doc { &allocator() };
+    base_document_t doc { &allocator() };
     doc.Parse(str.data(), str.size());
 
     if (doc.HasParseError()) {
@@ -30,7 +30,7 @@ parse(std::string_view const str)
     }
 
     value result;
-    new (&result.base_value()) rj::Value { doc, allocator() };
+    new (&result.base_value()) base_value_t { doc, allocator() };
 
     return result;
 }
@@ -38,7 +38,7 @@ parse(std::string_view const str)
 value
 parse(std::istream& is)
 {
-    rj::Document doc { &allocator() };
+    base_document_t doc { &allocator() };
     rj::IStreamWrapper wrapper { is };
 
     doc.ParseStream(wrapper);
@@ -50,7 +50,7 @@ parse(std::istream& is)
     }
 
     value result;
-    new (&result.base_value()) rj::Value { doc, allocator() };
+    new (&result.base_value()) base_value_t { doc, allocator() };
 
     return result;
 }
@@ -61,7 +61,7 @@ stringify(value const& v)
     rj::StringBuffer sb;
     rj::Writer writer { sb };
 
-    reinterpret_cast<rj::Value const&>(v).Accept(writer);
+    reinterpret_cast<base_value_t const&>(v).Accept(writer);
 
     return sb.GetString();
 }
