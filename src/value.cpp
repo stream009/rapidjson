@@ -9,6 +9,7 @@
 #include "internal/underlying_value.hpp"
 
 #include <cmath>
+#include <ostream>
 #include <stdexcept>
 
 #include <rapidjson/ostreamwrapper.h>
