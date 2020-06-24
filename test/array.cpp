@@ -299,6 +299,28 @@ BOOST_AUTO_TEST_SUITE(modifier)
 
 BOOST_AUTO_TEST_SUITE_END() // modifier
 
+BOOST_AUTO_TEST_SUITE(operator_)
+
+    BOOST_AUTO_TEST_CASE(equal_to_array_)
+    {
+        json::array a1, a2;
+        a1.push_back(1);
+        a2.push_back(1);
+
+        BOOST_CHECK_EQUAL(a1, a2);
+    }
+
+    BOOST_AUTO_TEST_CASE(not_equal_to_array_)
+    {
+        json::array a1, a2;
+        a1.push_back(1);
+        a2.push_back(2);
+
+        BOOST_CHECK_NE(a1, a2);
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // operator_
+
 BOOST_AUTO_TEST_SUITE_END() // array
 
 } // namespace json::testing

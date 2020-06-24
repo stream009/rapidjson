@@ -167,6 +167,12 @@ erase(const_iterator const first, const_iterator const last)
                 reinterpret_cast<base::value_type::ConstValueIterator>(last));
 }
 
+bool array::
+operator==(array const& other) const
+{
+    return this->base_value() == other.base_value();
+}
+
 std::ostream&
 operator<<(std::ostream& os, array const& a)
 {

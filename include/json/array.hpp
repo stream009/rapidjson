@@ -62,6 +62,10 @@ public:
 
     void erase(const_iterator);
     void erase(const_iterator first, const_iterator last);
+
+    // operator
+    bool operator==(array const&) const;
+    bool operator!=(array const& other) const { return !(*this == other); }
 };
 
 std::ostream& operator<<(std::ostream&, array const&);
