@@ -417,6 +417,18 @@ BOOST_AUTO_TEST_SUITE(modifier)
 
 BOOST_AUTO_TEST_SUITE_END() // modifier
 
+BOOST_AUTO_TEST_SUITE(stringify_)
+
+    BOOST_AUTO_TEST_CASE(object_)
+    {
+        json::object o;
+        o["foo"] = "bar";
+
+        BOOST_TEST(stringify(o) == "{\"foo\":\"bar\"}");
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // stringify_
+
 BOOST_AUTO_TEST_SUITE_END() // object
 
 BOOST_AUTO_TEST_SUITE(object_iterator)

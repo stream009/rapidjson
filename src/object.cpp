@@ -528,10 +528,16 @@ operator>(const_iterator const it) const
     return to_base(*this).operator>(to_base(it));
 }
 
+std::string
+stringify(object const& v)
+{
+    return stringify(v.as_value());
+}
+
 std::ostream&
 operator<<(std::ostream& os, object const& o)
 {
-    os << static_cast<value const&>(o);
+    os << o.as_value();
 
     return os;
 }

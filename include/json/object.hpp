@@ -1,6 +1,9 @@
 #ifndef JSON_OBJECT_HPP
 #define JSON_OBJECT_HPP
 
+#include <iosfwd>
+#include <string>
+
 #include <json/base.hpp>
 #include <json/value.hpp>
 
@@ -171,6 +174,8 @@ public:
 private:
     std::aligned_storage_t<8, 8> m_it;
 };
+
+std::string stringify(object const&);
 
 std::ostream& operator<<(std::ostream&, object const&);
 
