@@ -65,6 +65,10 @@ public:
     void erase(const_iterator);
     void erase(const_iterator first, const_iterator last);
     bool erase(key_type);
+
+    // operator
+    bool operator==(object const&) const;
+    bool operator!=(object const& other) const { return !(*this == other); }
 };
 
 class object::iterator

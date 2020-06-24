@@ -232,6 +232,12 @@ erase(key_type const key)
     return this->base_value().EraseMember(k);
 }
 
+bool object::
+operator==(object const& other) const
+{
+    return this->base_value() == other.base_value();
+}
+
 // object::iterator
 
 object::iterator::

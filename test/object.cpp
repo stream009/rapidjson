@@ -947,6 +947,28 @@ BOOST_AUTO_TEST_SUITE(comparator)
 
 BOOST_AUTO_TEST_SUITE_END() // comparator
 
+BOOST_AUTO_TEST_SUITE(operator_)
+
+    BOOST_AUTO_TEST_CASE(equal_to_object_)
+    {
+        json::object o1, o2;
+        o1["foo"] = 1;
+        o2["foo"] = 1;
+
+        BOOST_CHECK_EQUAL(o1, o2);
+    }
+
+    BOOST_AUTO_TEST_CASE(not_equal_to_object_)
+    {
+        json::object o1, o2;
+        o1["foo"] = 1;
+        o2["foo"] = 2;
+
+        BOOST_CHECK_NE(o1, o2.as_value());
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // operator_
+
 BOOST_AUTO_TEST_SUITE_END() // object_iterator
 
 } // namespace json::testing
