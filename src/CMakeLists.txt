@@ -8,7 +8,6 @@ add_library(json STATIC
     value.cpp
     array.cpp
     object.cpp
-    json.cpp
     parse_error.cpp
     pointer_error.cpp
     pointer.cpp

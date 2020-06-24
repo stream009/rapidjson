@@ -11,13 +11,4 @@
 #include <json/pointer.hpp>
 #include <json/error.hpp>
 
-namespace json {
-
-value parse(std::string_view);
-value parse(std::istream&);
-
-std::string stringify(value const&);
-
-} // namespace json
-
 #endif // JSON_JSON_HPP

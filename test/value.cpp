@@ -1,5 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
+#include <sstream>
+
 #include <json/value.hpp>
 #include <json/array.hpp>
 #include <json/object.hpp>
@@ -1101,6 +1103,35 @@ BOOST_AUTO_TEST_SUITE(conversion_op)
     }
 
 BOOST_AUTO_TEST_SUITE_END() // conversion_op
+
+BOOST_AUTO_TEST_SUITE(parse_)
+
+    BOOST_AUTO_TEST_CASE(from_stream_)
+    {
+        std::stringstream ss;
+        ss << R"({ "foo": "bar" })";
+
+        auto const v = json::parse(ss);
+
+        auto* const obj = v.get_object();
+
+        BOOST_ASSERT(obj);
+        BOOST_ASSERT(obj->contains("foo"));
+        BOOST_TEST((*obj)["foo"] == "bar");
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // parse_
+
+BOOST_AUTO_TEST_SUITE(stringify_)
+
+    BOOST_AUTO_TEST_CASE(value_)
+    {
+        json::value v = 1;
+
+        BOOST_TEST(stringify(v) == "1");
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // stringify_
 
 BOOST_AUTO_TEST_SUITE_END() // value_
 

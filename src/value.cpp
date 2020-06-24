@@ -1,6 +1,7 @@
 #include <json/value.hpp>
 
 #include <json/array.hpp>
+#include <json/error.hpp>
 #include <json/object.hpp>
 #include <json/pointer.hpp>
 
@@ -9,11 +10,15 @@
 #include "internal/underlying_value.hpp"
 
 #include <cmath>
+#include <istream>
 #include <ostream>
 #include <stdexcept>
 
+#include <rapidjson/document.h>
+#include <rapidjson/istreamwrapper.h>
 #include <rapidjson/ostreamwrapper.h>
 #include <rapidjson/pointer.h>
+#include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
 //#define DEBUG_VERBOSE
@@ -583,6 +588,55 @@ undefined()
 {
     static value const v { json::undefined };
     return v;
+}
+
+value
+parse(std::string_view const str)
+{
+    base_document_t doc { &allocator() };
+    doc.Parse(str.data(), str.size());
+
+    if (doc.HasParseError()) {
+        throw parse_error(
+            make_parse_error_code(doc.GetParseError()),
+            doc.GetErrorOffset());
+    }
+
+    value result;
+    new (&result.base_value()) base_value_t { doc, allocator() };
+
+    return result;
+}
+
+value
+parse(std::istream& is)
+{
+    base_document_t doc { &allocator() };
+    rj::IStreamWrapper wrapper { is };
+
+    doc.ParseStream(wrapper);
+
+    if (doc.HasParseError()) {
+        throw parse_error(
+            make_parse_error_code(doc.GetParseError()),
+            doc.GetErrorOffset());
+    }
+
+    value result;
+    new (&result.base_value()) base_value_t { doc, allocator() };
+
+    return result;
+}
+
+std::string
+stringify(value const& v)
+{
+    rj::StringBuffer sb;
+    rj::Writer writer { sb };
+
+    reinterpret_cast<base_value_t const&>(v).Accept(writer);
+
+    return sb.GetString();
 }
 
 std::ostream&

@@ -185,6 +185,15 @@ private:
     friend value parse(std::istream&);
 };
 
+value parse(std::string_view);
+value parse(std::istream&);
+
+std::string stringify(value const&);
+
+std::ostream& operator<<(std::ostream&, value::type);
+std::ostream& operator<<(std::ostream&, null_t);
+std::ostream& operator<<(std::ostream&, undefined_t);
+
 inline value& value::
 operator=(int32_t const i)
 {
@@ -433,10 +442,6 @@ operator!=(undefined_t const lhs, value const& rhs)
 {
     return rhs != lhs;
 }
-
-std::ostream& operator<<(std::ostream&, value::type);
-std::ostream& operator<<(std::ostream&, null_t);
-std::ostream& operator<<(std::ostream&, undefined_t);
 
 } // namespace json
 

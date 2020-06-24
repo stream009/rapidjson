@@ -8,7 +8,6 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 
 add_executable(test_json
     main.cpp
-    json.cpp
     value.cpp
     array.cpp
     object.cpp
