@@ -17,18 +17,18 @@ C++ wrapper for RapidJSON
 4. add 'lib' directory to cilent's linker search path
 
 ## outermost namespace
-json
+stream9::json
 
 ## headers
-### json/json.hpp
-declare free functions
-- value parse(std::string_view);
-- std::string stringify(value const&);
-- value* find(value&, std::string_view json_pointer);
+### stream9/json.hpp
+### stream9/json/json.hpp
+convenient all encompasing header
 
-### json/value.hpp
-declare class 'value' which represent JSON value
-### json/object.hpp
-declare class 'object' which represent JSON object
-### json/array.hpp
-declare class 'array' which represent JSON array
+### stream9/json/value.hpp
+declare class 'value' which represent JSON value and its related free functions
+
+### stream9/json/object.hpp
+declare class 'object' which represent JSON object and its related free functions
+
+### stream9/json/array.hpp
+declare class 'array' which represent JSON array and its related free functions
