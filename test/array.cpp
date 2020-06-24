@@ -125,6 +125,35 @@ BOOST_AUTO_TEST_SUITE(query)
 
 BOOST_AUTO_TEST_SUITE_END() // query
 
+BOOST_AUTO_TEST_SUITE(accessor_)
+
+    BOOST_AUTO_TEST_CASE(as_value_)
+    {
+        json::array a;
+        a.push_back(1);
+
+        auto& v = a.as_value();
+
+        BOOST_TEST(v.is_array());
+        BOOST_TEST(v.get_array()->at(0) == 1);
+        BOOST_TEST(((void*)&v == (void*)&a));
+    }
+
+    BOOST_AUTO_TEST_CASE(as_value_const_)
+    {
+        json::array a;
+        a.push_back(1);
+        auto const& ac = a;
+
+        auto const& v = ac.as_value();
+
+        BOOST_TEST(v.is_array());
+        BOOST_TEST(v.get_array()->at(0) == 1);
+        BOOST_TEST(((void const*)&v == (void const*)&a));
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // accessor_
+
 BOOST_AUTO_TEST_SUITE(iterator)
 
     BOOST_AUTO_TEST_CASE(begin)

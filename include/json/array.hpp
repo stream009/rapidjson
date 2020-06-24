@@ -43,6 +43,9 @@ public:
     value& back();
     value const& back() const;
 
+    value& as_value();
+    value const& as_value() const;
+
     // iterator
     iterator begin();
     iterator end();

@@ -89,6 +89,18 @@ back() const
     return operator[](size() - 1);
 }
 
+value& array::
+as_value()
+{
+    return reinterpret_cast<value&>(*this);
+}
+
+value const& array::
+as_value() const
+{
+    return reinterpret_cast<value const&>(*this);
+}
+
 array::iterator array::
 begin()
 {
