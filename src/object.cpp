@@ -148,6 +148,18 @@ operator[](key_type const key)
     return reinterpret_cast<value&>(v);
 }
 
+value& object::
+as_value()
+{
+    return reinterpret_cast<value&>(*this);
+}
+
+value const& object::
+as_value() const
+{
+    return reinterpret_cast<value const&>(*this);
+}
+
 object::iterator object::
 begin()
 {

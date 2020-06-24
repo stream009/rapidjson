@@ -44,6 +44,9 @@ public:
     value& operator[](key_type);
     value const& operator[](key_type const key) const { return at(key); }
 
+    value& as_value();
+    value const& as_value() const;
+
     // iterator
     iterator begin();
     iterator end();

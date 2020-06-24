@@ -215,6 +215,33 @@ BOOST_AUTO_TEST_SUITE(accessor)
         BOOST_TEST(oc["foo"] == 1);
     }
 
+    BOOST_AUTO_TEST_CASE(as_value_)
+    {
+        json::object o;
+
+        o["foo"] = 1;
+
+        auto& v = o.as_value();
+
+        BOOST_TEST(v.is_object());
+        BOOST_TEST(v.get_object()->at("foo") == 1);
+        BOOST_TEST(((void*)&v == (void*)&o));
+    }
+
+    BOOST_AUTO_TEST_CASE(as_value_const_)
+    {
+        json::object o;
+
+        o["foo"] = 1;
+        auto const& oc = o;
+
+        auto const& v = oc.as_value();
+
+        BOOST_TEST(v.is_object());
+        BOOST_TEST(v.get_object()->at("foo") == 1);
+        BOOST_TEST(((void const*)&v == (void const*)&o));
+    }
+
 BOOST_AUTO_TEST_SUITE_END() // accessor
 
 BOOST_AUTO_TEST_SUITE(iterator_)
