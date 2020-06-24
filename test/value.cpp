@@ -304,7 +304,7 @@ BOOST_AUTO_TEST_SUITE(constructor)
         BOOST_TEST(v2 == s);
     }
 
-    BOOST_AUTO_TEST_CASE(array)
+    BOOST_AUTO_TEST_CASE(array_copy)
     {
         json::array a;
         a.push_back(true);
@@ -314,7 +314,20 @@ BOOST_AUTO_TEST_SUITE(constructor)
         BOOST_TEST(v == a);
     }
 
-    BOOST_AUTO_TEST_CASE(object)
+    BOOST_AUTO_TEST_CASE(array_move)
+    {
+        json::array a;
+        a.push_back("foo");
+
+        auto const& foo = a[0];
+
+        json::value v { std::move(a) };
+
+        BOOST_TEST(v.is_array());
+        BOOST_TEST((&(v.get_array()->at(0)) == &foo));
+    }
+
+    BOOST_AUTO_TEST_CASE(object_copy)
     {
         json::object o;
         o["foo"] = "bar";
@@ -322,6 +335,22 @@ BOOST_AUTO_TEST_SUITE(constructor)
         json::value v { o };
 
         BOOST_TEST(v == o);
+    }
+
+    BOOST_AUTO_TEST_CASE(object_move)
+    {
+        json::object o;
+        o["foo"] = "bar";
+
+        auto const& foo = o["foo"];
+
+        json::value v { std::move(o) };
+
+        auto* const o2 = v.get_object();
+        BOOST_TEST(o2);
+
+        auto& v2 = o2->at("foo");
+        BOOST_TEST(&v2 == &foo);
     }
 
     BOOST_AUTO_TEST_CASE(null_)

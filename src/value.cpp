@@ -109,10 +109,24 @@ value(array const& a)
 }
 
 value::
+value(array&& a)
+    : base { std::move(a) }
+{
+    LOG("value(array&&)");
+}
+
+value::
 value(object const& o)
     : base { o }
 {
     LOG("value(object const&)");
+}
+
+value::
+value(object&& o)
+    : base { std::move(o) }
+{
+    LOG("value(object&&)");
 }
 
 value::

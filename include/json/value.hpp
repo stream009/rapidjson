@@ -67,7 +67,9 @@ public:
     value(std::string_view);
 
     value(array const&);
+    value(array&&);
     value(object const&);
+    value(object&&);
     value(null_t);
 
     template<typename Bool,
