@@ -2,12 +2,12 @@
 
 #include <sstream>
 
-#include <json/value.hpp>
-#include <json/array.hpp>
-#include <json/object.hpp>
-#include <json/pointer.hpp>
+#include <stream9/json/value.hpp>
+#include <stream9/json/array.hpp>
+#include <stream9/json/object.hpp>
+#include <stream9/json/pointer.hpp>
 
-namespace json::testing {
+namespace stream9::json::tesing {
 
 BOOST_AUTO_TEST_SUITE(value_)
 

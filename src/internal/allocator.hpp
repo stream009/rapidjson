@@ -1,12 +1,12 @@
-#ifndef JSON_ALLOCATOR_HPP
-#define JSON_ALLOCATOR_HPP
+#ifndef STREAM9_JSON_ALLOCATOR_HPP
+#define STREAM9_JSON_ALLOCATOR_HPP
 
 #include <rapidjson/allocators.h>
 
-namespace json {
+namespace stream9::json {
 
 rapidjson::CrtAllocator& allocator();
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_ALLOCATOR_HPP
+#endif // STREAM9_JSON_ALLOCATOR_HPP

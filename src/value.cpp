@@ -1,9 +1,9 @@
-#include <json/value.hpp>
+#include <stream9/json/value.hpp>
 
-#include <json/array.hpp>
-#include <json/error.hpp>
-#include <json/object.hpp>
-#include <json/pointer.hpp>
+#include <stream9/json/array.hpp>
+#include <stream9/json/error.hpp>
+#include <stream9/json/object.hpp>
+#include <stream9/json/pointer.hpp>
 
 #include "internal/allocator.hpp"
 #include "internal/convert.hpp"
@@ -30,7 +30,7 @@
     #define LOG(x) (void)0
 #endif
 
-namespace json {
+namespace stream9::json {
 
 namespace rj = rapidjson;
 
@@ -696,4 +696,4 @@ operator<<(std::ostream& os, undefined_t)
     return os;
 }
 
-} // namespace json
+} // namespace stream9::json

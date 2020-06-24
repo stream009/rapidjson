@@ -1,10 +1,10 @@
-#ifndef JSON_ERROR_POINTER_ERROR_HPP
-#define JSON_ERROR_POINTER_ERROR_HPP
+#ifndef STREAM9_JSON_ERROR_POINTER_ERROR_HPP
+#define STREAM9_JSON_ERROR_POINTER_ERROR_HPP
 
 #include <iosfwd>
 #include <system_error>
 
-namespace json {
+namespace stream9::json {
 
 enum class pointer_errc {
     none,
@@ -41,13 +41,13 @@ std::error_code make_pointer_error_code(int ev);
 
 std::ostream& operator<<(std::ostream&, pointer_errc);
 
-} // namespace json
+} // namespace stream9::json
 
 namespace std {
 
 template<>
-struct is_error_condition_enum<json::pointer_errc> : public true_type {};
+struct is_error_condition_enum<stream9::json::pointer_errc> : public true_type {};
 
 } // namespace std
 
-#endif // JSON_ERROR_POINTER_ERROR_HPP
+#endif // STREAM9_JSON_ERROR_POINTER_ERROR_HPP

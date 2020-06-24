@@ -1,13 +1,13 @@
-#ifndef JSON_OBJECT_HPP
-#define JSON_OBJECT_HPP
+#ifndef STREAM9_JSON_OBJECT_HPP
+#define STREAM9_JSON_OBJECT_HPP
 
 #include <iosfwd>
 #include <string>
 
-#include <json/base.hpp>
-#include <json/value.hpp>
+#include <stream9/json/base.hpp>
+#include <stream9/json/value.hpp>
 
-namespace json {
+namespace stream9::json {
 
 class object : public base
 {
@@ -179,6 +179,6 @@ std::string stringify(object const&);
 
 std::ostream& operator<<(std::ostream&, object const&);
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_OBJECT_HPP
+#endif // STREAM9_JSON_OBJECT_HPP

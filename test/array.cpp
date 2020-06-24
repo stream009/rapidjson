@@ -1,9 +1,9 @@
 #include <boost/test/unit_test.hpp>
 
-#include <json/array.hpp>
-#include <json/value.hpp>
+#include <stream9/json/array.hpp>
+#include <stream9/json/value.hpp>
 
-namespace json::testing {
+namespace stream9::json::tesing {
 
 BOOST_AUTO_TEST_SUITE(array)
 
@@ -335,5 +335,5 @@ BOOST_AUTO_TEST_SUITE_END() // stringify_
 
 BOOST_AUTO_TEST_SUITE_END() // array
 
-} // namespace json::testing
+} // namespace stream9::json::tesing
 

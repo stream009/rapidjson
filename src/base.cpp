@@ -1,4 +1,4 @@
-#include <json/base.hpp>
+#include <stream9/json/base.hpp>
 
 #include "internal/allocator.hpp"
 #include "internal/convert.hpp"
@@ -6,7 +6,7 @@
 
 #include <string_view>
 
-namespace json {
+namespace stream9::json {
 
 namespace rj = rapidjson;
 
@@ -170,4 +170,4 @@ set_undefined(bool const undefined)
     }
 }
 
-} // namespace json
+} // namespace stream9::json

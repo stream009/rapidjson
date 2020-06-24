@@ -1,13 +1,13 @@
-#include <json/pointer.hpp>
+#include <stream9/json/pointer.hpp>
 
-#include <json/error.hpp>
+#include <stream9/json/error.hpp>
 
 #include "internal/underlying_value.hpp"
 
 #include <rapidjson/pointer.h>
 #include <rapidjson/stringbuffer.h>
 
-namespace json {
+namespace stream9::json {
 
 namespace rj = rapidjson;
 
@@ -116,4 +116,4 @@ operator!=(pointer const& lhs, pointer const& rhs)
     return !(lhs == rhs);
 }
 
-} // namespace json
+} // namespace stream9::json

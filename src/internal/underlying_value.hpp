@@ -1,14 +1,14 @@
-#ifndef JSON_UNDERLYING_VALUE
-#define JSON_UNDERLYING_VALUE
+#ifndef STREAM9_JSON_UNDERLYING_VALUE
+#define STREAM9_JSON_UNDERLYING_VALUE
 
-#include <json/base.hpp>
+#include <stream9/json/base.hpp>
 
 #include "allocator.hpp"
 
 #include <rapidjson/document.h>
 #include <rapidjson/pointer.h>
 
-namespace json {
+namespace stream9::json {
 
 namespace rj = rapidjson;
 
@@ -32,6 +32,6 @@ public:
 
 };
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_UNDERLYING_VALUE
+#endif // STREAM9_JSON_UNDERLYING_VALUE

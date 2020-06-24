@@ -1,6 +1,6 @@
 #include "allocator.hpp"
 
-namespace json {
+namespace stream9::json {
 
 rapidjson::CrtAllocator&
 allocator()
@@ -9,4 +9,4 @@ allocator()
     return alloc;
 }
 
-} // namespace json
+} // namespace stream9::json

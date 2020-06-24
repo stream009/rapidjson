@@ -1,11 +1,11 @@
-#include <json/error/pointer_error.hpp>
+#include <stream9/json/error/pointer_error.hpp>
 
 #include <cassert>
 #include <ostream>
 
 #include <rapidjson/pointer.h>
 
-namespace json {
+namespace stream9::json {
 
 static rapidjson::PointerParseErrorCode
 to_rapid(int ev)

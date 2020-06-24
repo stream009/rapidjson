@@ -1,14 +1,14 @@
-#ifndef JSON_VALUE_HPP
-#define JSON_VALUE_HPP
+#ifndef STREAM9_JSON_VALUE_HPP
+#define STREAM9_JSON_VALUE_HPP
 
-#include <json/base.hpp>
+#include <stream9/json/base.hpp>
 
 #include <iosfwd>
 #include <optional>
 #include <string>
 #include <string_view>
 
-namespace json {
+namespace stream9::json {
 
 class array;
 class base;
@@ -443,6 +443,6 @@ operator!=(undefined_t const lhs, value const& rhs)
     return rhs != lhs;
 }
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_VALUE_HPP
+#endif // STREAM9_JSON_VALUE_HPP

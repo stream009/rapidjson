@@ -1,4 +1,4 @@
-#include <json/error/parse_error.hpp>
+#include <stream9/json/error/parse_error.hpp>
 
 #include <cassert>
 #include <ostream>
@@ -6,7 +6,7 @@
 #include <rapidjson/error/en.h>
 #include <rapidjson/error/error.h>
 
-namespace json {
+namespace stream9::json {
 
 static rapidjson::ParseErrorCode
 to_rapid(int ev)

@@ -1,11 +1,11 @@
 #include <boost/test/unit_test.hpp>
 
-#include <json/object.hpp>
-#include <json/value.hpp>
+#include <stream9/json/object.hpp>
+#include <stream9/json/value.hpp>
 
 #include <iostream>
 
-namespace json {
+namespace stream9::json {
 
 std::ostream&
 operator<<(std::ostream& os, object::iterator const& it)
@@ -35,7 +35,7 @@ operator<<(std::ostream& os, object::const_iterator const& it)
 
 } // namespace json
 
-namespace json::testing {
+namespace stream9::json::tesing {
 
 BOOST_AUTO_TEST_SUITE(object)
 
@@ -983,4 +983,4 @@ BOOST_AUTO_TEST_SUITE_END() // operator_
 
 BOOST_AUTO_TEST_SUITE_END() // object_iterator
 
-} // namespace json::testing
+} // namespace stream9::json::tesing

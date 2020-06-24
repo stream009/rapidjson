@@ -1,13 +1,13 @@
-#ifndef JSON_ARRAY_HPP
-#define JSON_ARRAY_HPP
+#ifndef STREAM9_JSON_ARRAY_HPP
+#define STREAM9_JSON_ARRAY_HPP
 
-#include <json/base.hpp>
-#include <json/value.hpp>
+#include <stream9/json/base.hpp>
+#include <stream9/json/value.hpp>
 
 #include <iosfwd>
 #include <string>
 
-namespace json {
+namespace stream9::json {
 
 class value;
 
@@ -74,6 +74,6 @@ std::string stringify(array const&);
 
 std::ostream& operator<<(std::ostream&, array const&);
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_ARRAY_HPP
+#endif // STREAM9_JSON_ARRAY_HPP

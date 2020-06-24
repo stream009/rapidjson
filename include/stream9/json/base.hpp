@@ -1,10 +1,10 @@
-#ifndef JSON_BASE_HPP
-#define JSON_BASE_HPP
+#ifndef STREAM9_JSON_BASE_HPP
+#define STREAM9_JSON_BASE_HPP
 
 #include <string_view>
 #include <type_traits>
 
-namespace json {
+namespace stream9::json {
 
 class base
 {
@@ -45,6 +45,6 @@ private:
     std::aligned_storage_t<16> m_value;
 };
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_BASE_HPP
+#endif // STREAM9_JSON_BASE_HPP

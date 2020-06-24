@@ -1,12 +1,12 @@
-#ifndef JSON_INTERNAL_CONVERT_HPP
-#define JSON_INTERNAL_CONVERT_HPP
+#ifndef STREAM9_JSON_INTERNAL_CONVERT_HPP
+#define STREAM9_JSON_INTERNAL_CONVERT_HPP
 
 #include <stdexcept>
 #include <limits>
 
 #include <rapidjson/rapidjson.h>
 
-namespace json {
+namespace stream9::json {
 
 namespace rj = rapidjson;
 
@@ -19,6 +19,6 @@ to_rj_size(size_t const i)
     return static_cast<rj::SizeType>(i);
 }
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_INTERNAL_CONVERT_HPP
+#endif // STREAM9_JSON_INTERNAL_CONVERT_HPP

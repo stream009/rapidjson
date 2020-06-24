@@ -1,1 +1,1 @@
-install(DIRECTORY json TYPE INCLUDE)
+install(DIRECTORY stream9 TYPE INCLUDE)

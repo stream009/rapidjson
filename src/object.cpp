@@ -1,11 +1,11 @@
-#include <json/object.hpp>
+#include <stream9/json/object.hpp>
 
-#include <json/value.hpp>
+#include <stream9/json/value.hpp>
 
 #include "internal/convert.hpp"
 #include "internal/underlying_value.hpp"
 
-namespace json {
+namespace stream9::json {
 
 namespace rj = rapidjson;
 
@@ -542,4 +542,4 @@ operator<<(std::ostream& os, object const& o)
     return os;
 }
 
-} // namespace json
+} // namespace stream9::json

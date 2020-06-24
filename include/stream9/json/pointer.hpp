@@ -1,11 +1,11 @@
-#ifndef JSON_POINTER_HPP
-#define JSON_POINTER_HPP
+#ifndef STREAM9_JSON_POINTER_HPP
+#define STREAM9_JSON_POINTER_HPP
 
 #include <string>
 #include <string_view>
 #include <type_traits>
 
-namespace json {
+namespace stream9::json {
 
 class value;
 
@@ -58,6 +58,6 @@ std::ostream& operator<<(std::ostream&, pointer const&);
 bool operator==(pointer const& lhs, pointer const& rhs);
 bool operator!=(pointer const& lhs, pointer const& rhs);
 
-} // namespace json
+} // namespace stream9::json
 
-#endif // JSON_POINTER_HPP
+#endif // STREAM9_JSON_POINTER_HPP

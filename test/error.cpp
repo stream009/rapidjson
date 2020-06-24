@@ -1,12 +1,12 @@
 #include <boost/test/unit_test.hpp>
 
-#include <json/error.hpp>
-#include <json/json.hpp>
-#include <json/pointer.hpp>
+#include <stream9/json/error.hpp>
+#include <stream9/json/json.hpp>
+#include <stream9/json/pointer.hpp>
 
 #include <iostream>
 
-namespace json::testing {
+namespace stream9::json::tesing {
 
 BOOST_AUTO_TEST_SUITE(parse_error_)
 
@@ -169,4 +169,4 @@ BOOST_AUTO_TEST_SUITE(pointer_error_)
 
 BOOST_AUTO_TEST_SUITE_END() // pointer_error_
 
-} // namespace json::testing
+} // namespace stream9::json::tesing
