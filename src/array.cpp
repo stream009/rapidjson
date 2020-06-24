@@ -173,6 +173,12 @@ operator==(array const& other) const
     return this->base_value() == other.base_value();
 }
 
+std::string
+stringify(array const& v)
+{
+    return stringify(v.as_value());
+}
+
 std::ostream&
 operator<<(std::ostream& os, array const& a)
 {

@@ -2,8 +2,10 @@
 #define JSON_ARRAY_HPP
 
 #include <json/base.hpp>
+#include <json/value.hpp>
 
 #include <iosfwd>
+#include <string>
 
 namespace json {
 
@@ -67,6 +69,8 @@ public:
     bool operator==(array const&) const;
     bool operator!=(array const& other) const { return !(*this == other); }
 };
+
+std::string stringify(array const&);
 
 std::ostream& operator<<(std::ostream&, array const&);
 

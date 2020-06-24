@@ -321,6 +321,18 @@ BOOST_AUTO_TEST_SUITE(operator_)
 
 BOOST_AUTO_TEST_SUITE_END() // operator_
 
+BOOST_AUTO_TEST_SUITE(stringify_)
+
+    BOOST_AUTO_TEST_CASE(array_)
+    {
+        json::array a;
+        a.push_back(1);
+
+        BOOST_TEST(stringify(a) =="[1]");
+    }
+
+BOOST_AUTO_TEST_SUITE_END() // stringify_
+
 BOOST_AUTO_TEST_SUITE_END() // array
 
 } // namespace json::testing
