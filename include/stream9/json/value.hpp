@@ -134,8 +134,6 @@ public:
     // pointer
     value const& find(pointer const&) const;
     value&       emplace(pointer const&);
-    value&       operator[](pointer const&);
-    value const& operator[](pointer const&) const;
     void         erase(pointer const&);
     bool         contains(pointer const&) const;
 

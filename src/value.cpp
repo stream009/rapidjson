@@ -463,18 +463,6 @@ emplace(pointer const& p)
     );
 }
 
-value& value::
-operator[](pointer const& p)
-{
-    return emplace(p);
-}
-
-value const& value::
-operator[](pointer const& p) const
-{
-    return find(p);
-}
-
 void value::
 erase(pointer const& p)
 {

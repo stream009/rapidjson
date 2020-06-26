@@ -121,38 +121,6 @@ BOOST_AUTO_TEST_SUITE(emplace_)
 
 BOOST_AUTO_TEST_SUITE_END() // emplace_
 
-BOOST_AUTO_TEST_SUITE(subscript_)
-
-    BOOST_AUTO_TEST_CASE(path_exists_)
-    {
-        auto v1 = json::parse(R"({
-            "foo": {
-                "bar": 1
-            }
-        })");
-
-        json::pointer p { "/foo/bar" };
-
-        BOOST_TEST(v1[p] == 1);
-    }
-
-    BOOST_AUTO_TEST_CASE(path_doesnt_exists_)
-    {
-        auto v1 = json::parse(R"({
-            "foo": {
-                "bar": 1
-            }
-        })");
-
-        BOOST_TEST(v1["/foo/baz"] == json::null);
-
-        auto const p = "/xyzzy";
-        v1[p] = 2;
-        BOOST_TEST(v1.find(p) == 2);
-    }
-
-BOOST_AUTO_TEST_SUITE_END() // operator[]_
-
 BOOST_AUTO_TEST_SUITE(erase_)
 
     BOOST_AUTO_TEST_CASE(success_)
