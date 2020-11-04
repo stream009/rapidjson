@@ -20,6 +20,7 @@
 #include <rapidjson/pointer.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
+#include <rapidjson/prettywriter.h>
 
 //#define DEBUG_VERBOSE
 
@@ -621,6 +622,19 @@ stringify(value const& v)
 {
     rj::StringBuffer sb;
     rj::Writer writer { sb };
+
+    reinterpret_cast<base_value_t const&>(v).Accept(writer);
+
+    return sb.GetString();
+}
+
+std::string
+stringify(value const& v, size_t const space)
+{
+    rj::StringBuffer sb;
+    rj::PrettyWriter writer { sb };
+
+    writer.SetIndent(' ', static_cast<unsigned>(space));
 
     reinterpret_cast<base_value_t const&>(v).Accept(writer);
 

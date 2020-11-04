@@ -187,6 +187,7 @@ value parse(std::string_view);
 value parse(std::istream&);
 
 std::string stringify(value const&);
+std::string stringify(value const&, size_t space);
 
 std::ostream& operator<<(std::ostream&, value::type);
 std::ostream& operator<<(std::ostream&, null_t);
