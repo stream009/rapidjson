@@ -3,10 +3,18 @@ project('stream9_json', 'cpp',
 
 add_project_arguments(['-Wconversion', '-Wsign-conversion'], language: 'cpp')
 
-inc = include_directories('include')
+public_inc = include_directories('include')
+private_inc = []
+
+private_deps = []
+
+project_libs = []
 
 subdir('src')
 
-if get_option('build_test')
-  subdir('test')
-endif
+project_dep = declare_dependency(
+  include_directories: public_inc,
+  link_with: project_libs,
+)
+
+meson.override_dependency(meson.project_name(), project_dep)

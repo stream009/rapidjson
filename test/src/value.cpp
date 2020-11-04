@@ -1,11 +1,11 @@
-#include <boost/test/unit_test.hpp>
-
 #include <sstream>
 
 #include <stream9/json/value.hpp>
 #include <stream9/json/array.hpp>
 #include <stream9/json/object.hpp>
 #include <stream9/json/pointer.hpp>
+
+#include <boost/test/unit_test.hpp>
 
 namespace stream9::json::tesing {
 
@@ -96,10 +96,10 @@ BOOST_AUTO_TEST_SUITE(constructor)
         wchar_t i = 1;
 
         json::value v(i); // implicit narrowing
-        BOOST_TEST(v == i);
+        BOOST_CHECK(v == i);
 
         json::value v2 = i; // conversion
-        BOOST_TEST(v2 == i);
+        BOOST_CHECK(v2 == i);
     }
 
     BOOST_AUTO_TEST_CASE(char16)
@@ -107,10 +107,10 @@ BOOST_AUTO_TEST_SUITE(constructor)
         char16_t i = 1;
 
         json::value v(i); // implicit narrowing
-        BOOST_TEST(v == i);
+        BOOST_CHECK(v == i);
 
         json::value v2 = i; // conversion
-        BOOST_TEST(v2 == i);
+        BOOST_CHECK(v2 == i);
     }
 
     BOOST_AUTO_TEST_CASE(char32)
@@ -118,10 +118,10 @@ BOOST_AUTO_TEST_SUITE(constructor)
         char32_t i = 1;
 
         json::value v(i); // implicit narrowing
-        BOOST_TEST(v == i);
+        BOOST_CHECK(v == i);
 
         json::value v2 = i; // conversion
-        BOOST_TEST(v2 == i);
+        BOOST_CHECK(v2 == i);
     }
 
     BOOST_AUTO_TEST_CASE(short_int)
@@ -437,7 +437,7 @@ BOOST_AUTO_TEST_SUITE(assignment)
 
         v = i;
 
-        BOOST_TEST(v == i);
+        BOOST_CHECK(v == i);
     }
 
     BOOST_AUTO_TEST_CASE(char16)
@@ -447,7 +447,7 @@ BOOST_AUTO_TEST_SUITE(assignment)
 
         v = i;
 
-        BOOST_TEST(v == i);
+        BOOST_CHECK(v == i);
     }
 
     BOOST_AUTO_TEST_CASE(char32)
@@ -457,7 +457,7 @@ BOOST_AUTO_TEST_SUITE(assignment)
 
         v = i;
 
-        BOOST_TEST(v == i);
+        BOOST_CHECK(v == i);
     }
 
     BOOST_AUTO_TEST_CASE(short_int)

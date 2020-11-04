@@ -1,0 +1,1 @@
+- operator== goes into infinite loop when compile with -std=c++2a

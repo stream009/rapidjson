@@ -1,21 +1,24 @@
-test_src = [
-  'main.cpp',
-  'value.cpp',
-  'array.cpp',
-  'object.cpp',
-  'error.cpp',
-  'pointer.cpp',
+project('stream9_json_test', 'cpp',
+  default_options: ['cpp_std=c++17', 'warning_level=3'], license: 'GPL3' )
+
+add_project_arguments(['-Wconversion', '-Wsign-conversion'], language: 'cpp')
+
+project_deps = [
+  dependency('boost', modules: ['unit_test_framework']),
+  dependency('stream9_json'),
 ]
 
-boost_dep = dependency('boost', modules: ['unit_test_framework'])
+project_inc = []
 
-test_exe = executable('json_test',
+subdir('src')
+
+test_exe = executable(
+  meson.project_name(),
   test_src,
-  include_directories: inc,
-  cpp_args: '-DBOOST_TEST_DYN_LINK',
-  dependencies: [json_dep, boost_dep]
+  include_directories: project_inc,
+  dependencies: project_deps,
 )
 
-run_target('run_test',
-  command: test_exe
+run_target('run',
+  command: [test_exe, '--color_output=no'],
 )
