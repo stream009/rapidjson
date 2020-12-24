@@ -1,4 +1,4 @@
-project_src = [
+project_src = files(
   'internal/allocator.cpp',
   'base.cpp',
   'value.cpp',
@@ -7,7 +7,7 @@ project_src = [
   'parse_error.cpp',
   'pointer_error.cpp',
   'pointer.cpp',
-]
+)
 
 private_inc = include_directories('../thirdparty/rapidjson/include', is_system: true)
 
