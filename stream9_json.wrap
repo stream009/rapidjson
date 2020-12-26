@@ -1,4 +1,4 @@
 [wrap-git]
 url = git@gitlab.com:libstream9/json.git
-revision = head
+revision = HEAD
 clone-recursive = true
