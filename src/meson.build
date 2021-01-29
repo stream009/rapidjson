@@ -11,7 +11,7 @@ project_src = files(
 
 private_inc = include_directories('../thirdparty/rapidjson/include', is_system: true)
 
-project_libs += static_library('stream9_json',
+project_libs += static_library('stream9_rapidjson',
   project_src,
   include_directories: [public_inc, private_inc],
 )

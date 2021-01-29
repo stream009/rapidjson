@@ -1,4 +1,4 @@
-project('stream9_json', 'cpp',
+project('stream9_rapidjson', 'cpp',
   default_options: ['cpp_std=c++17', 'warning_level=3'] )
 
 add_project_arguments(['-Wconversion', '-Wsign-conversion'], language: 'cpp')
